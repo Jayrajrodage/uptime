@@ -11,13 +11,13 @@ type props = {
 
 const StatusBar = ({ DayWiseRequests }: props) => {
   return (
-    <div className="flex flex-row-reverse gap-1px sm:gap-0.5">
+    <div className="flex flex-row-reverse gap-[3px] sm:gap-0.5">
       {DayWiseRequests.map((day) => (
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <div
-                className={`h-10 rounded-full flex-1 ${
+                className={`h-10 cursor-pointer rounded-full flex-1 ${
                   day.TotalFailed > 0 ? "bg-orange-400" : "bg-green-500"
                 }`}
               ></div>

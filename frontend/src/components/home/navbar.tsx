@@ -2,9 +2,16 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Menu, MenuItem, HoveredLink, ProductItem } from "../ui/navbar-menu";
 import { Link } from "react-router";
-import { Menu as IconMenu, X } from "lucide-react"; // Icons for mobile menu
+import { Menu as IconMenu, X } from "lucide-react";
 import { Button } from "../ui/moving-border";
-
+import {
+  SignedOut,
+  SignedIn,
+  UserButton,
+  ClerkLoading,
+  ClerkLoaded,
+} from "@clerk/clerk-react";
+import Loader from "../ui/loader";
 export function Navbar({ className }: { className?: string }) {
   const [active, setActive] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState<boolean>(false); // Mobile menu state
@@ -20,10 +27,13 @@ export function Navbar({ className }: { className?: string }) {
         onMouseLeave={() => setActive(null)}
         className="relative flex items-center justify-between rounded-full border dark:bg-black dark:border-white/[0.2] bg-white shadow-input px-5 py-1 md:space-x-4"
       >
-        {/* Brand Name */}
-        <Link to="/" className="text-xl font-bold text-black dark:text-white">
-          Uptime
-        </Link>
+        <div className="flex">
+          <img src="/uptime.png" alt="uptime" width={30} height={30} />
+          {/* Brand Name */}
+          <Link to="/" className="text-xl font-bold text-black dark:text-white">
+            Uptime
+          </Link>
+        </div>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-3">
@@ -67,7 +77,17 @@ export function Navbar({ className }: { className?: string }) {
 
         {/* Dashboard Button */}
         <div className="flex items-center space-x-4">
-          <Button variant="outline">Get Started</Button>
+          <ClerkLoading>
+            <Loader />
+          </ClerkLoading>
+          <ClerkLoaded>
+            <SignedOut>
+              <Button variant="outline">Get Started</Button>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </ClerkLoaded>
           <button
             className="block md:hidden text-black dark:text-white"
             onClick={() => setMenuOpen(!menuOpen)}

@@ -10,3 +10,11 @@ export type statusWidget = {
   Name: string;
   DayWiseRequests: statusWidgetArray[];
 };
+
+export type MoniterTableStats = {
+  Region: string;
+  Trend: any;
+  P50: number;
+  P95: number;
+  P90: number;
+};
