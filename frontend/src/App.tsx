@@ -3,8 +3,12 @@ import "./App.css";
 import Home from "./pages/home";
 import SignInPage from "./pages/signin";
 import SignUpPage from "./pages/signup";
-import Dashboard from "./pages/dashboard-moniter";
+import DashboardMoniter from "./pages/dashboard-moniter";
 import PrivateRoute from "./pages/privateRoute";
+import DashboardIncidents from "./pages/dashboard-incidents";
+import DashboardStatusPage from "./pages/dashboard-status-page";
+import DashboardNotifications from "./pages/dashboard-notifications";
+import DashboardSettings from "./pages/dashboard-settings";
 function App() {
   return (
     <>
@@ -13,7 +17,17 @@ function App() {
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route>
-          <Route path="/dashboard/moniters" element={<Dashboard />} />
+          <Route path="/dashboard/moniters" element={<DashboardMoniter />} />
+          <Route path="/dashboard/incidents" element={<DashboardIncidents />} />
+          <Route
+            path="/dashboard/status-pages"
+            element={<DashboardStatusPage />}
+          />
+          <Route
+            path="/dashboard/notifications"
+            element={<DashboardNotifications />}
+          />
+          <Route path="/dashboard/settings" element={<DashboardSettings />} />
         </Route>
       </Routes>
     </>

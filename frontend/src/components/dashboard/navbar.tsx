@@ -34,8 +34,8 @@ const DashboardNavbar = () => {
       <div>
         <ScrollArea type="auto">
           <div className="flex gap-5 mb-1.5 sm:mb-0  ">
-            <a
-              href="/dashboard/moniters"
+            <Link
+              to="/dashboard/moniters"
               className={`border-b-2 ${
                 location.pathname === "/dashboard/moniters"
                   ? "border-black dark:border-white"
@@ -43,32 +43,48 @@ const DashboardNavbar = () => {
               } hover:text-white font-medium sm:text-base md:text-sm text-xs `}
             >
               Moniters
-            </a>
+            </Link>
 
-            <a
-              href="/dashboard/incidents"
-              className="rounded-md hover:text-white font-medium sm:text-base md:text-sm text-xs"
+            <Link
+              to="/dashboard/incidents"
+              className={`border-b-2 ${
+                location.pathname === "/dashboard/incidents"
+                  ? "border-black dark:border-white"
+                  : "border-transparent"
+              } hover:text-white font-medium sm:text-base md:text-sm text-xs `}
             >
               Incidents
-            </a>
-            <a
-              href="/dashboard/status-pages"
-              className="rounded-md hover:text-white font-medium sm:text-base md:text-sm text-xs"
+            </Link>
+            <Link
+              to="/dashboard/status-pages"
+              className={`border-b-2 ${
+                location.pathname === "/dashboard/status-pages"
+                  ? "border-black dark:border-white"
+                  : "border-transparent"
+              } hover:text-white font-medium sm:text-base md:text-sm text-xs `}
             >
               Status Pages
-            </a>
-            <a
-              href="/dashboard/notifications"
-              className="rounded-md hover:text-white font-medium sm:text-base md:text-sm text-xs"
+            </Link>
+            <Link
+              to="/dashboard/notifications"
+              className={`border-b-2 ${
+                location.pathname === "/dashboard/notifications"
+                  ? "border-black dark:border-white"
+                  : "border-transparent"
+              } hover:text-white font-medium sm:text-base md:text-sm text-xs `}
             >
               Notifications
-            </a>
-            <a
-              href="/dashboard/settings"
-              className="rounded-md hover:text-white font-medium sm:text-base md:text-sm text-xs"
+            </Link>
+            <Link
+              to="/dashboard/settings"
+              className={`border-b-2 ${
+                location.pathname === "/dashboard/settings"
+                  ? "border-black dark:border-white"
+                  : "border-transparent"
+              } hover:text-white font-medium sm:text-base md:text-sm text-xs `}
             >
               Settings
-            </a>
+            </Link>
           </div>
           <ScrollBar />
         </ScrollArea>
