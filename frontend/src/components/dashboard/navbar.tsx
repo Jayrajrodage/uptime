@@ -37,7 +37,9 @@ const DashboardNavbar = () => {
             <Link
               to="/dashboard/moniters"
               className={`border-b-2 ${
-                location.pathname === "/dashboard/moniters"
+                location.pathname
+                  .toLowerCase()
+                  .startsWith("/dashboard/moniters")
                   ? "border-black dark:border-white"
                   : "border-transparent"
               } hover:text-white font-medium sm:text-base md:text-sm text-xs `}
@@ -58,7 +60,7 @@ const DashboardNavbar = () => {
             <Link
               to="/dashboard/status-pages"
               className={`border-b-2 ${
-                location.pathname === "/dashboard/status-pages"
+                location.pathname.toLowerCase() === "/dashboard/status-pages"
                   ? "border-black dark:border-white"
                   : "border-transparent"
               } hover:text-white font-medium sm:text-base md:text-sm text-xs `}
@@ -68,7 +70,7 @@ const DashboardNavbar = () => {
             <Link
               to="/dashboard/notifications"
               className={`border-b-2 ${
-                location.pathname === "/dashboard/notifications"
+                location.pathname.toLowerCase() === "/dashboard/notifications"
                   ? "border-black dark:border-white"
                   : "border-transparent"
               } hover:text-white font-medium sm:text-base md:text-sm text-xs `}
@@ -76,9 +78,11 @@ const DashboardNavbar = () => {
               Notifications
             </Link>
             <Link
-              to="/dashboard/settings"
+              to="/dashboard/settings/profile"
               className={`border-b-2 ${
-                location.pathname === "/dashboard/settings"
+                location.pathname
+                  .toLowerCase()
+                  .startsWith("/dashboard/settings/")
                   ? "border-black dark:border-white"
                   : "border-transparent"
               } hover:text-white font-medium sm:text-base md:text-sm text-xs `}

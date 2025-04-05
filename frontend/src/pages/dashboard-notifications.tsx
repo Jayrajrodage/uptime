@@ -1,20 +1,19 @@
 import DashboardLayout from "@/components/dashboard/layout";
-import Typography from "@mui/material/Typography";
-import React from "react";
+import CreateChannel from "@/components/dashboard/notification/create-channel";
+import NotificationDetails from "@/components/dashboard/notification/notification-details";
+import NotificationTable from "@/components/dashboard/notification/notification-table";
 
 const DashboardNotifications = () => {
   return (
     <DashboardLayout>
       <div className="rounded-xl border border-border bg-background/70 px-3 py-4 backdrop-blur-lg">
         <div className="flex flex-col gap-5">
-          <div className="flex items-center justify-start py-1">
-            <div className="">
-              <Typography variant="h4">Notifications</Typography>
-              <Typography variant="body1">
-                Overview of all your notification channels.
-              </Typography>
-            </div>
+          <div>
+            <NotificationTable />
           </div>
+          <div className="w-full border-t border-gray-300 my-4"></div>
+          <CreateChannel />
+          <NotificationDetails />
         </div>
       </div>
     </DashboardLayout>

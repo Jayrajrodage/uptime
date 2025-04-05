@@ -4,7 +4,6 @@ import { Switch } from "@/components/ui/switch";
 import React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { useTheme } from "@/provider/theme-provider";
 import {
@@ -18,27 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { regions } from "@/lib/utils";
 import { CircleCheck } from "lucide-react";
-interface TabPanelProps {
-  children?: React.ReactNode;
-  dir?: string;
-  index: number;
-  value: number;
-}
-function CustomTabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-    </div>
-  );
-}
+import { CustomTabPanel } from "../custom-panel";
 
 const MoniterSettings = () => {
   const userTheme = useTheme();

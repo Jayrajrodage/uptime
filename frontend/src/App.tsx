@@ -9,6 +9,7 @@ import DashboardIncidents from "./pages/dashboard-incidents";
 import DashboardStatusPage from "./pages/dashboard-status-page";
 import DashboardNotifications from "./pages/dashboard-notifications";
 import DashboardSettings from "./pages/dashboard-settings";
+import MoniterDetails from "./components/dashboard/moniter/moniter-details";
 function App() {
   return (
     <>
@@ -27,7 +28,14 @@ function App() {
             path="/dashboard/notifications"
             element={<DashboardNotifications />}
           />
-          <Route path="/dashboard/settings" element={<DashboardSettings />} />
+          <Route
+            path="/dashboard/settings/:section"
+            element={<DashboardSettings />}
+          />
+          <Route
+            path="/dashboard/moniters/details/:section"
+            element={<MoniterDetails />}
+          />
         </Route>
       </Routes>
     </>

@@ -25,12 +25,32 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ArrowDown, ArrowUp, ArrowUpDown, Check } from "lucide-react";
-
+import { ArrowDown, ArrowUp, ArrowUpDown, Check, Radio } from "lucide-react";
+import { Link } from "react-router-dom";
 const columns: MRT_ColumnDef<Person>[] = [
   {
     accessorKey: "name.firstName",
     header: "Name",
+    Header: () => (
+      <div className="flex items-center gap-5">
+        <Radio className="w-5 h-5 " />
+        Name
+      </div>
+    ),
+    Cell: ({ row }) => (
+      <div className="flex items-center gap-5">
+        <span className="relative flex h-3 w-3">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75 duration-1000"></span>
+          <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500"></span>
+        </span>
+        <Link
+          to={`/dashboard/moniters/details/overview`}
+          className="hover:underline"
+        >
+          {row.original.name.firstName}
+        </Link>
+      </div>
+    ),
   },
   {
     accessorKey: "name.lastName",
@@ -101,7 +121,7 @@ const MoniterTable = () => {
             </div>
             <Button className="cursor-pointer">Create</Button>
           </div>
-          <div>
+          <div className="flex justify-end">
             <MRT_GlobalFilterTextField
               size="small"
               placeholder="search...."
@@ -186,6 +206,7 @@ const MoniterTable = () => {
                           cell={cell}
                           table={table}
                           staticRowIndex={rowIndex}
+
                           //just for batch row selection to work
                         />
                       </TableCell>
