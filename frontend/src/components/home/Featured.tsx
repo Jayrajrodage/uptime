@@ -4,7 +4,7 @@ import { NumberTicker } from "../magicui/number-ticker";
 const Featured = () => {
   return (
     <div className="mt-10">
-      <div className="flex flex-col">
+      <div className="flex flex-col rounded-lg border border-border backdrop-blur-[2px] md:p-6 gap-6 bg-gradient-to-br from-0% from-[hsl(var(--muted))] to-20% to-transparent">
         <div className="flex flex-col items-center justify-center">
           <div className="rounded-full border border-border p-2">
             <svg
@@ -24,7 +24,7 @@ const Featured = () => {
           </div>
           <h1 className="text-4xl font-bold">Monitoring</h1>
         </div>
-        <div className="grid gap-10 grid-cols-none md:grid-cols-2">
+        <div className="grid grid-cols-none md:grid-cols-2">
           <div>
             <Globe />
           </div>
@@ -114,7 +114,7 @@ const Featured = () => {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-16 mt-10">
+      <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-16 mt-10  rounded-lg border border-border px-3 py-4 backdrop-blur-[2px] bg-gradient-to-br from-0% from-[hsl(var(--muted))] to-20% to-transparent">
         <div className="text-center">
           <h3 className="font-cal text-3xl">
             <NumberTicker value={26} />M

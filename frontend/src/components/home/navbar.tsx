@@ -7,7 +7,6 @@ import { Button } from "../ui/moving-border";
 import {
   SignedOut,
   SignedIn,
-  UserButton,
   ClerkLoading,
   ClerkLoaded,
 } from "@clerk/clerk-react";
@@ -82,10 +81,14 @@ export function Navbar({ className }: { className?: string }) {
           </ClerkLoading>
           <ClerkLoaded>
             <SignedOut>
-              <Button variant="outline">Get Started</Button>
+              <Link to={"/dashboard/moniters"}>
+                <Button variant="outline">Get Started</Button>
+              </Link>
             </SignedOut>
             <SignedIn>
-              <UserButton />
+              <Link to={"/dashboard/moniters"}>
+                <Button variant="outline">Dashboard</Button>
+              </Link>
             </SignedIn>
           </ClerkLoaded>
           <button

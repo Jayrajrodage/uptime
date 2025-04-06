@@ -1,6 +1,5 @@
 import DashboardLayout from "@/components/dashboard/layout";
 import CreateChannel from "@/components/dashboard/notification/create-channel";
-import NotificationDetails from "@/components/dashboard/notification/notification-details";
 import NotificationTable from "@/components/dashboard/notification/notification-table";
 
 const DashboardNotifications = () => {
@@ -13,7 +12,6 @@ const DashboardNotifications = () => {
           </div>
           <div className="w-full border-t border-gray-300 my-4"></div>
           <CreateChannel />
-          <NotificationDetails />
         </div>
       </div>
     </DashboardLayout>

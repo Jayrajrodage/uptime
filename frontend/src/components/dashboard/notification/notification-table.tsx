@@ -16,8 +16,19 @@ import {
 import { type Person, data } from "@/lib/utils";
 import { useTheme } from "@/provider/theme-provider";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
-type RowType = { [key: string]: any };
 const columns: MRT_ColumnDef<Person>[] = [
   {
     accessorKey: "name.firstName",
@@ -36,28 +47,35 @@ const columns: MRT_ColumnDef<Person>[] = [
     header: "Actions",
     Cell: ({ row }) => (
       <div className="flex gap-2">
-        <Button variant="outline" size="sm" onClick={() => handleEdit(row)}>
-          Edit
-        </Button>
-        <Button
-          variant="destructive"
-          size="sm"
-          onClick={() => handleDelete(row)}
+        <Link
+          to={`/dashboard/notifications/channel/details/${row.original.name}`}
         >
-          Delete
-        </Button>
+          <Button variant="outline" size="sm">
+            Edit
+          </Button>
+        </Link>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive">Delete</Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete your
+                channel.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction>Confirm</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     ),
   },
 ];
-
-const handleEdit = (row: RowType) => {
-  console.log("Edit", row);
-};
-
-const handleDelete = (row: RowType) => {
-  console.log("Delete", row);
-};
 
 const NotificationTable = () => {
   const userTheme = useTheme();

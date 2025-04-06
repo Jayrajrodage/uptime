@@ -3,7 +3,7 @@ import { TestimonialCards } from "../ui/testimonial-cards";
 
 const testimonial = () => {
   return (
-    <div className="flex flex-col gap-5 mt-10">
+    <div className="flex flex-col gap-5 mt-10 rounded-lg border border-border px-3 py-4 backdrop-blur-[2px] bg-gradient-to-br from-0% from-[hsl(var(--muted))] to-20% to-transparent">
       <div className="flex flex-col items-center justify-center">
         <div className="rounded-full border border-border p-2">
           <svg

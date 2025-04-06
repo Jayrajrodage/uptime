@@ -18,7 +18,7 @@ const DashboardNavbar = () => {
             Uptime
           </Link>
         </div>
-        <div className="flex gap-7 justify-center items-center">
+        <div className="flex gap-6 justify-center items-center">
           <h1 className="text-lg font-medium hover:underline hidden sm:block">
             Changelog
           </h1>
@@ -42,7 +42,7 @@ const DashboardNavbar = () => {
                   .startsWith("/dashboard/moniters")
                   ? "border-black dark:border-white"
                   : "border-transparent"
-              } hover:text-white font-medium sm:text-base md:text-sm text-xs `}
+              } dark:hover:text-white hover:text-gray-700 font-medium sm:text-base md:text-sm text-xs `}
             >
               Moniters
             </Link>
@@ -53,7 +53,7 @@ const DashboardNavbar = () => {
                 location.pathname === "/dashboard/incidents"
                   ? "border-black dark:border-white"
                   : "border-transparent"
-              } hover:text-white font-medium sm:text-base md:text-sm text-xs `}
+              } dark:hover:text-white hover:text-gray-700 font-medium sm:text-base md:text-sm text-xs `}
             >
               Incidents
             </Link>
@@ -63,17 +63,19 @@ const DashboardNavbar = () => {
                 location.pathname.toLowerCase() === "/dashboard/status-pages"
                   ? "border-black dark:border-white"
                   : "border-transparent"
-              } hover:text-white font-medium sm:text-base md:text-sm text-xs `}
+              } dark:hover:text-white hover:text-gray-700 font-medium sm:text-base md:text-sm text-xs `}
             >
               Status Pages
             </Link>
             <Link
               to="/dashboard/notifications"
               className={`border-b-2 ${
-                location.pathname.toLowerCase() === "/dashboard/notifications"
+                location.pathname
+                  .toLowerCase()
+                  .startsWith("/dashboard/notifications")
                   ? "border-black dark:border-white"
                   : "border-transparent"
-              } hover:text-white font-medium sm:text-base md:text-sm text-xs `}
+              } dark:hover:text-white hover:text-gray-700 font-medium sm:text-base md:text-sm text-xs `}
             >
               Notifications
             </Link>
@@ -85,7 +87,7 @@ const DashboardNavbar = () => {
                   .startsWith("/dashboard/settings/")
                   ? "border-black dark:border-white"
                   : "border-transparent"
-              } hover:text-white font-medium sm:text-base md:text-sm text-xs `}
+              } dark:hover:text-white hover:text-gray-700 font-medium sm:text-base md:text-sm text-xs `}
             >
               Settings
             </Link>

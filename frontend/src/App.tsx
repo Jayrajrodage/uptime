@@ -10,6 +10,7 @@ import DashboardStatusPage from "./pages/dashboard-status-page";
 import DashboardNotifications from "./pages/dashboard-notifications";
 import DashboardSettings from "./pages/dashboard-settings";
 import MoniterDetails from "./components/dashboard/moniter/moniter-details";
+import NotificationDetails from "./components/dashboard/notification/notification-details";
 function App() {
   return (
     <>
@@ -17,7 +18,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
-        <Route>
+        <Route element={<PrivateRoute />}>
           <Route path="/dashboard/moniters" element={<DashboardMoniter />} />
           <Route path="/dashboard/incidents" element={<DashboardIncidents />} />
           <Route
@@ -35,6 +36,10 @@ function App() {
           <Route
             path="/dashboard/moniters/details/:section"
             element={<MoniterDetails />}
+          />
+          <Route
+            path="/dashboard/notifications/channel/details/:id"
+            element={<NotificationDetails />}
           />
         </Route>
       </Routes>

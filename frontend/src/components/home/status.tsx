@@ -4,7 +4,7 @@ import { dummyStatusWidget } from "@/lib/utils";
 
 const Status = () => {
   return (
-    <div className="grid sm:gap-1 gap-2 grid-rows-none md:grid-rows-2">
+    <div className="mt-5 grid sm:gap-1 gap-2 grid-rows-none md:grid-rows-2 rounded-lg border border-border px-3 py-4 backdrop-blur-[2px] bg-gradient-to-br from-0% from-[hsl(var(--muted))] to-20% to-transparent">
       <div className="flex flex-col gap-3 mt-10">
         <div className="flex flex-col items-center justify-center">
           <div className="rounded-full border border-border p-2">

@@ -8,8 +8,8 @@ import Status from "@/components/home/status";
 import Footer from "@/components/home/footer";
 const home = () => {
   return (
-    <main className="min-h-screen 2xl:max-w-5xl w-full mx-auto">
-      <HeroHighlight>
+    <HeroHighlight>
+      <main className="min-h-screen max-w-5xl mx-auto">
         <Navbar />
         <Hero />
         <TrustedBy />
@@ -17,8 +17,8 @@ const home = () => {
         <Testimonial />
         <Status />
         <Footer />
-      </HeroHighlight>
-    </main>
+      </main>
+    </HeroHighlight>
   );
 };
 
