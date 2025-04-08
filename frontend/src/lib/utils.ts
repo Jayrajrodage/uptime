@@ -189,7 +189,7 @@ export const MoniterStatsTableData: MoniterTableStats[] = [
   { Region: "Asia", Trend: ChartData, P50: 100, P95: 280, P90: 230 },
   { Region: "South America", Trend: ChartData, P50: 90, P95: 270, P90: 220 },
   { Region: "Africa", Trend: ChartData, P50: 80, P95: 260, P90: 210 },
-  { Region: "Australia", Trend: ChartData, P50: 130, P95: 310, P90: 260 },
+  { Region: "Oceania", Trend: ChartData, P50: 130, P95: 310, P90: 260 },
 ];
 
 export const regions = [
@@ -198,5 +198,5 @@ export const regions = [
   { name: "Asia", subRegions: ["India", "China", "Japan"] },
   { name: "South America", subRegions: ["Brazil", "Argentina", "Chile"] },
   { name: "Africa", subRegions: ["Nigeria", "South Africa", "Kenya"] },
-  { name: "Australia", subRegions: ["Australia", "New Zealand"] },
+  { name: "Oceania", subRegions: ["Australia", "New Zealand"] },
 ];

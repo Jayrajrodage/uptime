@@ -18,3 +18,11 @@ export type MoniterTableStats = {
   P95: number;
   P90: number;
 };
+
+export type profile = {
+  id: number;
+  clerkId: string;
+  created_at: Date;
+  updated_at: Date;
+  plan: "FREE" | "PRO" | "UNLIMITED";
+};

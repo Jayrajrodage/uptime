@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Plan {
+  FREE
+  PRO
+  UNLIMITED
+}
+
+enum Channel {
+  Email
+  SMS
+  Discord
+  slack
+}
+
+enum Frequency {
+  TenMin    @map("10m")
+  TwentyMin @map("20m")
+  OneHr     @map("1Hr")
+}
+
+enum SubRegions {
+  USA
+  Canada
+  Mexico
+  Germany
+  France
+  UK
+  India
+  China
+  Japan
+  Brazil
+  Argentina
+  Chile
+  Nigeria
+  SouthsAfrica @map("South Africa")
+  Kenya
+  Australia
+  NewZealand     @map("New Zealand")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  clerkId    String   @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  plan       Plan     @default(FREE)
+}
+
+model Monitors {
+  id                  Int                    @id @default(autoincrement())
+  name                String
+  url                 String
+  headers             Json[]                 @default([])
+  frequency           Frequency
+  subRegions          SubRegion[]
+  // Custom timeout for this monitor in milliseconds
+  timeout             Int                    @default(45000)
+  created_at          DateTime               @default(now())
+  updated_at          DateTime               @updatedAt
+  notificationChannel NotificationChannels[]
+  StatusPages         StatusPages?
+  isDeleted Boolean @default(false)
+}
+
+model SubRegion {
+  id        Int        @id @default(autoincrement())
+  name      SubRegions
+  monitorId Int
+  monitors  Monitors?  @relation(fields: [monitorId], references: [id])
+}
+
+model NotificationChannels {
+  id        Int       @id @default(autoincrement())
+  name      String
+  channel   Channel
+  monitorId Int?
+  monitors  Monitors? @relation(fields: [monitorId], references: [id])
+}
+
+model StatusPages {
+  id        Int       @id @default(autoincrement())
+  title     String
+  slug      String
+  monitorId Int?      @unique
+  monitors  Monitors? @relation(fields: [monitorId], references: [id])
+}

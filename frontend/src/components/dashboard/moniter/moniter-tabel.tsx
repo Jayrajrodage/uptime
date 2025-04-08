@@ -194,8 +194,8 @@ const MoniterTable = () => {
                     </div>
                     <div className="flex gap-2">
                       <div className="w-full space-y-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input type="email" id="email" placeholder="Email" />
+                        <Label htmlFor="name">Name</Label>
+                        <Input type="text" id="name" placeholder="name" />
                       </div>
                       <div className="mt-5 flex flex-row items-center justify-center space-x-1 space-y-0">
                         <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
@@ -246,7 +246,7 @@ const MoniterTable = () => {
                           </div>
                           <div className="grid gap-4 sm:grid-cols-7 grid-cols-1">
                             <div className="flex flex-col gap-2 col-span-2">
-                              <Label htmlFor="email">Email</Label>
+                              <Label htmlFor="method">Method</Label>
                               <Select defaultValue={"GET"}>
                                 <SelectTrigger className="w-full">
                                   <SelectValue />
@@ -254,19 +254,19 @@ const MoniterTable = () => {
                                 <SelectContent>
                                   <SelectGroup>
                                     <SelectItem value="GET">GET</SelectItem>
-                                    <SelectItem value="POST">POST</SelectItem>
-                                    <SelectItem value="PUT">PUT</SelectItem>
+                                    <SelectItem disabled value="POST">
+                                      POST
+                                    </SelectItem>
+                                    <SelectItem disabled value="PUT">
+                                      PUT
+                                    </SelectItem>
                                   </SelectGroup>
                                 </SelectContent>
                               </Select>
                             </div>
                             <div className="flex flex-col gap-2 col-span-5">
-                              <Label htmlFor="email">Email</Label>
-                              <Input
-                                type="email"
-                                id="email"
-                                placeholder="Email"
-                              />
+                              <Label htmlFor="url">URL</Label>
+                              <Input type="text" id="url" placeholder="URL" />
                             </div>
                           </div>
                           <div className="flex flex-col gap-3">
@@ -422,7 +422,11 @@ const MoniterTable = () => {
                           <div className="mt-2 grid gap-4">
                             <div className="flex flex-col gap-2">
                               <Label>Degraded (in ms.)</Label>
-                              <Input type="number" placeholder="30000" />
+                              <Input
+                                disabled
+                                type="number"
+                                placeholder="30000"
+                              />
                               <p className="text-muted-foreground text-sm">
                                 Time after which the endpoint is considered
                                 degraded.
@@ -430,7 +434,11 @@ const MoniterTable = () => {
                             </div>
                             <div className="flex flex-col gap-2">
                               <Label>Timeout (in ms.)</Label>
-                              <Input type="number" placeholder="30000" />
+                              <Input
+                                value={45000}
+                                type="number"
+                                placeholder="30000"
+                              />
                               <p className="text-muted-foreground text-sm">
                                 Max. time allowed for request to complete.
                               </p>
