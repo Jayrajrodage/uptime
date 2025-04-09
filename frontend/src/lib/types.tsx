@@ -26,3 +26,9 @@ export type profile = {
   updated_at: Date;
   plan: "FREE" | "PRO" | "UNLIMITED";
 };
+
+export type CreateChannelInput = {
+  name: string;
+  channel: string;
+  channeldata: string;
+};

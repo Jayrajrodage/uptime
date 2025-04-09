@@ -1,24 +1,25 @@
 import { Request, Response, NextFunction } from "express";
+import { jwtDecode } from "jwt-decode";
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {
-  const authenticated = req.auth?.sessionClaims;
-  if (!authenticated) {
+  const token = req.cookies.__session;
+  if (!token) {
     res.status(401).json({
       success: false,
       message: "Unauthorized: token not found",
     });
     return;
   }
+  const decodedToken = jwtDecode<{ exp: number; sub: string }>(token);
   const nowInSeconds = Math.floor(Date.now() / 1000);
-  if (authenticated.exp < nowInSeconds) {
+  if (decodedToken.exp < nowInSeconds) {
     res.status(401).json({
       success: false,
       message: "Session expired",
     });
     return;
   }
-  const userId = req.auth?.userId;
-  console.log("🚀 ~ auth ~ userId:", userId);
+  const userId = decodedToken.sub;
   if (!userId) {
     res.status(401).json({
       success: false,
@@ -26,5 +27,6 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
     });
     return;
   }
+  req.userId = decodedToken.sub;
   next();
 };

@@ -10,6 +10,7 @@ import DashboardNotifications from "./pages/dashboard-notifications";
 import DashboardSettings from "./pages/dashboard-settings";
 import MoniterDetails from "./components/dashboard/moniter/moniter-details";
 import NotificationDetails from "./components/dashboard/notification/notification-details";
+import PaymentSuccess from "./components/dashboard/settings/payment-succes";
 function App() {
   return (
     <>
@@ -31,6 +32,10 @@ function App() {
           <Route
             path="/dashboard/settings/:section"
             element={<DashboardSettings />}
+          />
+          <Route
+            path="/dashboard/payment-success"
+            element={<PaymentSuccess />}
           />
           <Route
             path="/dashboard/moniters/details/:section"

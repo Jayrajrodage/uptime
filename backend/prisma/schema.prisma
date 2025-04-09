@@ -58,6 +58,7 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   plan       Plan     @default(FREE)
+  notificationChannel NotificationChannels[]
 }
 
 model Monitors {
@@ -81,14 +82,18 @@ model SubRegion {
   name      SubRegions
   monitorId Int
   monitors  Monitors?  @relation(fields: [monitorId], references: [id])
+  
 }
 
 model NotificationChannels {
   id        Int       @id @default(autoincrement())
   name      String
   channel   Channel
+  channeldata String
   monitorId Int?
   monitors  Monitors? @relation(fields: [monitorId], references: [id])
+  clerkId String?
+  user  User? @relation(fields: [clerkId], references: [clerkId])
 }
 
 model StatusPages {
