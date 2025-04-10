@@ -28,6 +28,22 @@ export type Person = {
   state: string;
 };
 
+export interface notificationTableProps {
+  channelData: Channel[];
+}
+interface monitor {
+  id: number;
+  name: string;
+  url: string;
+}
+export type Channel = {
+  id: number;
+  name: string;
+  channel: string;
+  channeldata: string;
+  monitors: monitor[];
+};
+
 export const data: Person[] = [
   {
     name: {

@@ -32,3 +32,10 @@ export type CreateChannelInput = {
   channel: string;
   channeldata: string;
 };
+
+export type UpdateChannelInput = {
+  name: string;
+  channel: string;
+  channeldata: string;
+  monitors: number[];
+};

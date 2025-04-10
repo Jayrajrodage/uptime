@@ -8,34 +8,39 @@ import { useMutation } from "@tanstack/react-query";
 import { crateChannel } from "@/api/channel";
 import { toast } from "sonner";
 import { CreateChannelInput } from "@/lib/types";
+import { useQueryClient } from "@tanstack/react-query";
 const Channels = ["Email", "SMS", "Discord", "Slack"];
 const ComingSoon = ["Discord", "Slack"];
+
 const CreateChannel = () => {
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors, isValid },
   } = useForm<CreateChannelInput>({ mode: "onChange" });
-
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (data: CreateChannelInput) => crateChannel(data),
-    onSuccess: () => {
-      toast.success("Channel created!");
-      reset();
-    },
-    onError: (error: any) => {
-      const responseErrors = error?.response?.data?.message;
-      if (Array.isArray(responseErrors)) {
-        responseErrors.forEach((err: string) => toast.error(err));
-      } else {
-        toast.error(responseErrors);
-      }
-    },
   });
 
   const onSubmit = (data: CreateChannelInput) => {
-    mutation.mutate(data);
+    toast.promise(mutation.mutateAsync(data), {
+      loading: "Creating channel...",
+      success: async () => {
+        reset();
+        await queryClient.invalidateQueries({ queryKey: ["channels"] });
+        return "Channel crated successfully!";
+      },
+      error: (error: any) => {
+        const responseErrors = error?.response?.data?.message;
+        if (Array.isArray(responseErrors)) {
+          return responseErrors.join(", ");
+        }
+        return responseErrors || "Something went wrong";
+      },
+    });
   };
   return (
     <div className="rounded-xl border border-border bg-background/70 px-3 py-4 backdrop-blur-lg">
@@ -58,7 +63,11 @@ const CreateChannel = () => {
                   send notifications with {channel}
                 </p>
               </div>
-              <Drawer onClose={() => reset()} key={channel}>
+              <Drawer
+                onClose={() => reset()}
+                onOpenChange={(open) => open && setValue("channel", channel)}
+                key={channel}
+              >
                 <DrawerTrigger>
                   <Button
                     disabled={ComingSoon.includes(channel)}

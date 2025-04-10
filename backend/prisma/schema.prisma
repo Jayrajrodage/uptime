@@ -72,7 +72,7 @@ model Monitors {
   timeout             Int                    @default(45000)
   created_at          DateTime               @default(now())
   updated_at          DateTime               @updatedAt
-  notificationChannel NotificationChannels[]
+  notificationChannel NotificationChannels[] @relation("ChannelMonitors")
   StatusPages         StatusPages?
   isDeleted Boolean @default(false)
 }
@@ -90,10 +90,9 @@ model NotificationChannels {
   name      String
   channel   Channel
   channeldata String
-  monitorId Int?
-  monitors  Monitors? @relation(fields: [monitorId], references: [id])
-  clerkId String?
-  user  User? @relation(fields: [clerkId], references: [clerkId])
+  monitors  Monitors[] @relation("ChannelMonitors")
+  clerkId String
+  user  User @relation(fields: [clerkId], references: [clerkId])
 }
 
 model StatusPages {

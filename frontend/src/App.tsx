@@ -11,9 +11,11 @@ import DashboardSettings from "./pages/dashboard-settings";
 import MoniterDetails from "./components/dashboard/moniter/moniter-details";
 import NotificationDetails from "./components/dashboard/notification/notification-details";
 import PaymentSuccess from "./components/dashboard/settings/payment-succes";
+import { Toaster } from "sonner";
 function App() {
   return (
     <>
+      <Toaster richColors closeButton />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/sign-in" element={<SignInPage />} />

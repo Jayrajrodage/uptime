@@ -13,75 +13,49 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { type Person, data } from "@/lib/utils";
+import { Channel, notificationTableProps } from "@/lib/utils";
 import { useTheme } from "@/provider/theme-provider";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
+import DeleteChannel from "./delete-channel";
 
-const columns: MRT_ColumnDef<Person>[] = [
+const columns: MRT_ColumnDef<Channel>[] = [
   {
-    accessorKey: "name.firstName",
+    accessorKey: "name",
     header: "Name",
   },
   {
-    accessorKey: "name.lastName",
+    accessorKey: "channel",
     header: "Provider",
+    Cell: ({ row }) => (
+      <div>
+        <Badge variant={"secondary"}>{row.original.channel}</Badge>
+      </div>
+    ),
   },
   {
-    accessorKey: "address",
+    accessorKey: "monitors",
     header: "Monitor",
+    Cell: ({ row }) => (
+      <>
+        {row.original.monitors.map((monitor) => (
+          <Badge variant={"secondary"}>{monitor.name}</Badge>
+        ))}
+      </>
+    ),
   },
   {
     accessorKey: "actions",
     header: "Actions",
-    Cell: ({ row }) => (
-      <div className="flex gap-2">
-        <Link
-          to={`/dashboard/notifications/channel/details/${row.original.name}`}
-        >
-          <Button variant="outline" size="sm">
-            Edit
-          </Button>
-        </Link>
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant="destructive">Delete</Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete your
-                channel.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction>Confirm</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </div>
-    ),
+    Cell: ({ row }) => <DeleteChannel row={row} />,
   },
 ];
 
-const NotificationTable = () => {
+const NotificationTable = ({ channelData }: notificationTableProps) => {
   const userTheme = useTheme();
   const table = useMaterialReactTable({
     columns,
-    data,
+    data: channelData,
     enableSorting: false, // Disable sorting globally
     enableColumnFilters: false, // Disable column filtering
     initialState: {
@@ -113,43 +87,48 @@ const NotificationTable = () => {
             </Typography>
           </div>
         </div>
-        <TableContainer>
-          <Table>
-            <TableHead>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableCell align="left" variant="head" key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHead>
+        {channelData.length > 0 ? (
+          <TableContainer>
+            <Table>
+              <TableHead>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <TableCell align="left" variant="head" key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableHead>
 
-            <TableBody>
-              {table.getRowModel().rows.map((row, rowIndex) => (
-                <TableRow key={row.id} selected={row.getIsSelected()}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell align="left" variant="body" key={cell.id}>
-                      <MRT_TableBodyCellValue
-                        cell={cell}
-                        table={table}
-                        staticRowIndex={rowIndex}
-                      />
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              <TableBody>
+                {table.getRowModel().rows.map((row, rowIndex) => (
+                  <TableRow key={row.id} selected={row.getIsSelected()}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell align="left" variant="body" key={cell.id}>
+                        <MRT_TableBodyCellValue
+                          cell={cell}
+                          table={table}
+                          staticRowIndex={rowIndex}
+                        />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          <h1 className="text-center">zero notification channels found</h1>
+        )}
       </div>
+      <div className="w-full border-t border-gray-300 mt-6"></div>
     </ThemeProvider>
   );
 };
