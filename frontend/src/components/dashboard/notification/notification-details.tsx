@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CircleCheck, CircleX } from "lucide-react";
 import DashboardLayout from "../layout";
-import { Channel } from "@/lib/utils";
+import { Channel } from "@/lib/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getChannelDetails, updateChannel } from "@/api/channel";
 import { useParams } from "react-router-dom";

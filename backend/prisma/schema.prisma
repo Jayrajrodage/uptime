@@ -59,6 +59,8 @@ model User {
   updated_at DateTime @updatedAt
   plan       Plan     @default(FREE)
   notificationChannel NotificationChannels[]
+  statusPages StatusPages[]
+  monitors Monitors[]
 }
 
 model Monitors {
@@ -66,6 +68,7 @@ model Monitors {
   name                String
   url                 String
   headers             Json[]                 @default([])
+  method              String
   frequency           Frequency
   subRegions          SubRegion[]
   // Custom timeout for this monitor in milliseconds
@@ -74,13 +77,16 @@ model Monitors {
   updated_at          DateTime               @updatedAt
   notificationChannel NotificationChannels[] @relation("ChannelMonitors")
   StatusPages         StatusPages?
+  clerkId String
+  user  User @relation(fields: [clerkId], references: [clerkId])
   isDeleted Boolean @default(false)
+  isActive Boolean @default(false)
 }
 
 model SubRegion {
   id        Int        @id @default(autoincrement())
   name      SubRegions
-  monitorId Int
+  monitorId Int?
   monitors  Monitors?  @relation(fields: [monitorId], references: [id])
   
 }
@@ -101,4 +107,6 @@ model StatusPages {
   slug      String
   monitorId Int?      @unique
   monitors  Monitors? @relation(fields: [monitorId], references: [id])
+  clerkId String
+  user  User @relation(fields: [clerkId], references: [clerkId])
 }

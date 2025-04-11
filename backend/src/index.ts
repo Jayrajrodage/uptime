@@ -3,6 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import profile from "./routes/profile";
 import channel from "./routes/channel";
+import statusPages from "./routes/statusPages";
+import monitor from "./routes/monitor";
 import { auth } from "./middleware/auth";
 import cookieParser from "cookie-parser";
 dotenv.config();
@@ -21,6 +23,10 @@ app.listen(port, () => console.log(`App listing on port ${port}`));
 app.use("/api/profile", auth, profile);
 //channel
 app.use("/api/channel", auth, channel);
+//status pages
+app.use("/api/status-pages", auth, statusPages);
+//monitor
+app.use("/api/monitor", auth, monitor);
 
 app.get("/", (req, res) => {
   // Send a response to the client

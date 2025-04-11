@@ -28,22 +28,6 @@ export type Person = {
   state: string;
 };
 
-export interface notificationTableProps {
-  channelData: Channel[];
-}
-interface monitor {
-  id: number;
-  name: string;
-  url: string;
-}
-export type Channel = {
-  id: number;
-  name: string;
-  channel: string;
-  channeldata: string;
-  monitors: monitor[];
-};
-
 export const data: Person[] = [
   {
     name: {
@@ -209,10 +193,63 @@ export const MoniterStatsTableData: MoniterTableStats[] = [
 ];
 
 export const regions = [
-  { name: "North America", subRegions: ["USA", "Canada", "Mexico"] },
-  { name: "Europe", subRegions: ["Germany", "France", "UK"] },
-  { name: "Asia", subRegions: ["India", "China", "Japan"] },
-  { name: "South America", subRegions: ["Brazil", "Argentina", "Chile"] },
-  { name: "Africa", subRegions: ["Nigeria", "South Africa", "Kenya"] },
-  { name: "Oceania", subRegions: ["Australia", "New Zealand"] },
+  {
+    name: "North America",
+    subRegions: [
+      { id: 1, name: "USA" },
+      { id: 2, name: "Canada" },
+      { id: 3, name: "Mexico" },
+    ],
+  },
+  {
+    name: "Europe",
+    subRegions: [
+      { id: 4, name: "Germany" },
+      { id: 5, name: "France" },
+      { id: 6, name: "UK" },
+    ],
+  },
+  {
+    name: "Asia",
+    subRegions: [
+      { id: 7, name: "India" },
+      { id: 8, name: "China" },
+      { id: 9, name: "Japan" },
+    ],
+  },
+  {
+    name: "South America",
+    subRegions: [
+      { id: 10, name: "Brazil" },
+      { id: 11, name: "Argentina" },
+      { id: 12, name: "Chile" },
+    ],
+  },
+  {
+    name: "Africa",
+    subRegions: [
+      { id: 13, name: "Nigeria" },
+      { id: 14, name: "South Africa" },
+      { id: 15, name: "Kenya" },
+    ],
+  },
+  {
+    name: "Oceania",
+    subRegions: [
+      { id: 16, name: "Australia" },
+      { id: 17, name: "New Zealand" },
+    ],
+  },
+];
+
+export const notificationChannelsDemo = [
+  { name: "lingo", channel: "Email", id: 0 },
+  { name: "TriggerX", channel: "Email", id: 1 },
+  { name: "boss", channel: "SMS", id: 2 },
+];
+
+export const monitorsPageDemo = [
+  { id: 0, name: "lingo", url: "https://lingo.com" },
+  { id: 1, name: "TriggerX", url: "https://Triggerx.com" },
+  { id: 2, name: "boss", url: "https://boss.com" },
 ];

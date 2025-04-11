@@ -62,3 +62,50 @@ export const updateChannelSchema = z
       path: ["channeldata"],
     }
   );
+
+export const PagesSchema = z.object({
+  title: z
+    .string()
+    .min(1, "title must be at least 1 characters")
+    .max(30, "title must be less than 30 characters"),
+  slug: z
+    .string()
+    .min(1, "slug must be at least 1 characters")
+    .max(30, "slug must be less than 30 characters"),
+  monitorId: z.number().min(1, "Invalid monitor ID"),
+});
+
+export const MonitorSchema = z.object({
+  name: z
+    .string()
+    .min(1, "name must be at least 1 characters")
+    .max(30, "name must be less than 30 characters"),
+  url: z
+    .string()
+    .min(1, "url must be at least 1 characters")
+    .max(50, "url must be less than 50 characters")
+    .url(),
+  headers: z
+    .array(
+      z.object({
+        key: z.string().min(1, "Header key is required"),
+        value: z.string().min(1, "Header value is required"),
+      })
+    )
+    .default([]),
+  frequency: z.enum(["TenMin", "TwentyMin", "OneHr"], {
+    required_error: "Frequency is required",
+    invalid_type_error: "Invalid frequency value",
+  }),
+  subRegions: z.array(z.number().min(1, "Invalid sub region")).default([]),
+  timeout: z.number().max(10000000, "max timeout exceeded").default(45000),
+  notificationChannel: z
+    .array(z.number().min(1, "Invalid notification channel"))
+    .default([]),
+  StatusPages: z.number().min(1, "Invalid status page"),
+  isActive: z.boolean().default(false),
+  method: z
+    .string()
+    .min(1, "method is required")
+    .max(20, "method length is to big"),
+});

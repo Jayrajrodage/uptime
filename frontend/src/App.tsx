@@ -12,6 +12,7 @@ import MoniterDetails from "./components/dashboard/moniter/moniter-details";
 import NotificationDetails from "./components/dashboard/notification/notification-details";
 import PaymentSuccess from "./components/dashboard/settings/payment-succes";
 import { Toaster } from "sonner";
+import StatusPageDetails from "./components/dashboard/status-page/status-page-details";
 function App() {
   return (
     <>
@@ -46,6 +47,10 @@ function App() {
           <Route
             path="/dashboard/notifications/channel/details/:id"
             element={<NotificationDetails />}
+          />
+          <Route
+            path="/dashboard/status-page/details/:id"
+            element={<StatusPageDetails />}
           />
         </Route>
       </Routes>

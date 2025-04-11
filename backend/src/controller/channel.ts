@@ -1,7 +1,6 @@
 import prisma from "../utils/db";
 import { Request, Response } from "express";
 import { channelSchema, updateChannelSchema } from "../zod/schema";
-import { fromError } from "zod-validation-error";
 
 export const createChannel = async (req: Request, res: Response) => {
   try {
@@ -42,7 +41,7 @@ export const getChannels = async (req: Request, res: Response) => {
         },
       },
     });
-    if (Channels.length < 0) {
+    if (!Channels) {
       res.status(401).send({
         message: "Channels not found",
       });
@@ -133,6 +132,7 @@ export const updateChannel = async (req: Request, res: Response) => {
 export const deleteChannel = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    //TODO: before delete check if the channel is used on any monitor
     await prisma.notificationChannels.delete({ where: { id: parseInt(id) } });
     res.status(200).send({
       message: "Channel deleted successfully",

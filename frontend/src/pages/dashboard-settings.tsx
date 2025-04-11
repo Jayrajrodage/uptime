@@ -11,7 +11,7 @@ const DashboardSettings = () => {
   const path = useLocation();
   return (
     <DashboardLayout>
-      <div className="grid grid-cols-1 md:grid-cols-8 gap-3">
+      <div className="h-screen grid grid-cols-1 md:grid-cols-8 gap-3">
         <div className="rounded-xl border border-border p-2 bg-background/70 px-3 py-4 backdrop-blur-lg md:col-span-2">
           <div className="flex flex-col gap-2 mt-2">
             <div className="flex items-center justify-between ">

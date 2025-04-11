@@ -14,7 +14,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { type Person, data } from "@/lib/utils";
+import { type StatusPage } from "@/lib/utils";
 import { useTheme } from "@/provider/theme-provider";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,7 +23,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ArrowDown, ArrowUp, ArrowUpDown, Check } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  ArrowUpRight,
+  Check,
+} from "lucide-react";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import {
   Select,
@@ -35,26 +41,56 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-const columns: MRT_ColumnDef<Person>[] = [
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Link } from "react-router-dom";
+const columns: MRT_ColumnDef<StatusPage>[] = [
   {
-    accessorKey: "name.firstName",
+    accessorKey: "title",
     header: "Title",
+    Cell: ({ row }) => (
+      <Link
+        to={`/dashboard/status-page/details/${row.original.id}`}
+        className="hover:underline"
+      >
+        {row.original.title}
+      </Link>
+    ),
   },
   {
-    accessorKey: "name.lastName",
+    accessorKey: "slug",
     header: "Slug",
+    Cell: ({ row }) => (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <h1 className="hover:underline">{row.original.slug}</h1>
+            <ArrowUpRight />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Visit page</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    ),
   },
   {
-    accessorKey: "address",
+    accessorKey: "monitor",
     header: "Monitors",
   },
 ];
-
-const StatusTable = () => {
+interface props {
+  Pages: StatusPage[];
+}
+const StatusTable = ({ Pages }: props) => {
   const userTheme = useTheme();
   const table = useMaterialReactTable({
     columns,
-    data,
+    data: Pages,
     enableSorting: true, // Enable sorting globally
     enableColumnFilters: true, // Enable column filtering
     initialState: {
@@ -230,10 +266,6 @@ const StatusTable = () => {
             </TableBody>
           </Table>
         </TableContainer>
-
-        <div className="flex justify-end">
-          <MRT_TablePagination table={table} />
-        </div>
       </div>
     </ThemeProvider>
   );

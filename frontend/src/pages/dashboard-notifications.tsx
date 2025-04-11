@@ -20,7 +20,7 @@ const DashboardNotifications = () => {
 
   return (
     <DashboardLayout>
-      <div className="rounded-xl border border-border bg-background/70 px-3 py-4 backdrop-blur-lg">
+      <div className="h-screen rounded-xl border border-border bg-background/70 px-3 py-4 backdrop-blur-lg">
         {isLoading ? (
           <div className="flex h-screen justify-center items-center">
             <Loader />

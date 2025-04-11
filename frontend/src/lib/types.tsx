@@ -39,3 +39,41 @@ export type UpdateChannelInput = {
   channeldata: string;
   monitors: number[];
 };
+interface headers {
+  key: string;
+  value: string;
+}
+enum frequency {
+  "TenMin",
+  "TwentyMin",
+  "OneHr",
+}
+export type CreateMonitorInput = {
+  name: string;
+  isActive: boolean;
+  url: string;
+  headers: headers[];
+  frequency: frequency;
+  subRegions: number[];
+  timeout: number;
+  notificationChannel: number[];
+  StatusPages: number;
+  method: string;
+  monitor: number;
+};
+
+export interface notificationTableProps {
+  channelData: Channel[];
+}
+interface monitor {
+  id: number;
+  name: string;
+  url: string;
+}
+export type Channel = {
+  id: number;
+  name: string;
+  channel: string;
+  channeldata: string;
+  monitors: monitor[];
+};
