@@ -253,3 +253,9 @@ export const monitorsPageDemo = [
   { id: 1, name: "TriggerX", url: "https://Triggerx.com" },
   { id: 2, name: "boss", url: "https://boss.com" },
 ];
+
+export const statusPagesDemo = [
+  { title: "lingo", id: 0 },
+  { title: "TriggerX", id: 1 },
+  { title: "boss", id: 2 },
+];

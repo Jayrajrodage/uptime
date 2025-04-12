@@ -70,7 +70,7 @@ model Monitors {
   headers             Json[]                 @default([])
   method              String
   frequency           Frequency
-  subRegions          SubRegion[]
+  subRegions          SubRegion[]    @relation("SubRegionsMonitors")
   // Custom timeout for this monitor in milliseconds
   timeout             Int                    @default(45000)
   created_at          DateTime               @default(now())
@@ -86,9 +86,7 @@ model Monitors {
 model SubRegion {
   id        Int        @id @default(autoincrement())
   name      SubRegions
-  monitorId Int?
-  monitors  Monitors?  @relation(fields: [monitorId], references: [id])
-  
+  monitors  Monitors[]    @relation("SubRegionsMonitors")
 }
 
 model NotificationChannels {
@@ -104,7 +102,7 @@ model NotificationChannels {
 model StatusPages {
   id        Int       @id @default(autoincrement())
   title     String
-  slug      String
+  slug      String    @unique
   monitorId Int?      @unique
   monitors  Monitors? @relation(fields: [monitorId], references: [id])
   clerkId String

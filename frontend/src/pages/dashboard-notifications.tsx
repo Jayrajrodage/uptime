@@ -1,11 +1,9 @@
 import DashboardLayout from "@/components/dashboard/layout";
 import CreateChannel from "@/components/dashboard/notification/create-channel";
 import NotificationTable from "@/components/dashboard/notification/notification-table";
-import { useQuery } from "@tanstack/react-query";
-import { getChannels } from "@/api/channel";
-import { Channel } from "@/lib/utils";
 import Loader from "@/components/ui/loader";
 import ErrorComponent from "@/components/ui/error";
+import { useChannels } from "@/hooks/useChannels";
 
 const DashboardNotifications = () => {
   const {
@@ -13,10 +11,7 @@ const DashboardNotifications = () => {
     isLoading,
     isError,
     isSuccess,
-  } = useQuery<Channel[]>({
-    queryKey: ["channels"],
-    queryFn: getChannels,
-  });
+  } = useChannels();
 
   return (
     <DashboardLayout>

@@ -1,16 +1,11 @@
-import { getPages } from "@/api/status-pages";
 import DashboardLayout from "@/components/dashboard/layout";
 import StatusTable from "@/components/dashboard/status-page/status-table";
 import ErrorComponent from "@/components/ui/error";
 import Loader from "@/components/ui/loader";
-import { StatusPage } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
+import { useStatusPages } from "@/hooks/useStatusPages";
 
 const DashboardStatusPage = () => {
-  const { data, isLoading, isError, isSuccess } = useQuery<StatusPage[]>({
-    queryKey: ["statusPages"],
-    queryFn: getPages,
-  });
+  const { data, isLoading, isError, isSuccess } = useStatusPages();
   return (
     <DashboardLayout>
       <div className="h-screen rounded-xl border border-border bg-background/70 px-3 py-4 backdrop-blur-lg">

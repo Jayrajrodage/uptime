@@ -49,7 +49,7 @@ function App() {
             element={<NotificationDetails />}
           />
           <Route
-            path="/dashboard/status-page/details/:id"
+            path="/dashboard/status-pages/details/:id"
             element={<StatusPageDetails />}
           />
         </Route>

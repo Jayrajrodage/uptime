@@ -72,7 +72,7 @@ export const PagesSchema = z.object({
     .string()
     .min(1, "slug must be at least 1 characters")
     .max(30, "slug must be less than 30 characters"),
-  monitorId: z.number().min(1, "Invalid monitor ID"),
+  monitorId: z.number().min(1, "Invalid monitor ID").optional(),
 });
 
 export const MonitorSchema = z.object({
@@ -97,13 +97,15 @@ export const MonitorSchema = z.object({
     required_error: "Frequency is required",
     invalid_type_error: "Invalid frequency value",
   }),
-  subRegions: z.array(z.number().min(1, "Invalid sub region")).default([]),
+  subRegions: z
+    .array(z.number())
+    .min(1, "Please select at least one subregion"),
   timeout: z.number().max(10000000, "max timeout exceeded").default(45000),
   notificationChannel: z
     .array(z.number().min(1, "Invalid notification channel"))
     .default([]),
-  StatusPages: z.number().min(1, "Invalid status page"),
-  isActive: z.boolean().default(false),
+  StatusPages: z.number().min(1, "Invalid status page").optional(),
+  isActive: z.boolean().default(true),
   method: z
     .string()
     .min(1, "method is required")

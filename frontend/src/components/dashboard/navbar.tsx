@@ -60,7 +60,9 @@ const DashboardNavbar = () => {
             <Link
               to="/dashboard/status-pages"
               className={`border-b-2 ${
-                location.pathname.toLowerCase() === "/dashboard/status-pages"
+                location.pathname
+                  .toLowerCase()
+                  .startsWith("/dashboard/status-pages")
                   ? "border-black dark:border-white"
                   : "border-transparent"
               } dark:hover:text-white hover:text-gray-700 font-medium sm:text-base md:text-sm text-xs `}

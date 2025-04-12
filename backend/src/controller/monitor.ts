@@ -58,10 +58,12 @@ export const getMonitors = async (req: Request, res: Response) => {
 
 export const createMonitor = async (req: Request, res: Response) => {
   try {
-    const parsedData = MonitorSchema.safeParse(req.body);
+    const parsedData = MonitorSchema.safeParse(req.body.inputData);
     const clerkId = req.userId;
     if (!parsedData.success) {
-      const errorMessages = parsedData.error.issues.map((obj) => obj.message);
+      const errorMessages = parsedData.error.issues.map(
+        (obj) => `${obj.message}: ${obj.path[0]}`
+      );
       res.status(400).send({ message: errorMessages });
       return;
     }
@@ -91,9 +93,11 @@ export const createMonitor = async (req: Request, res: Response) => {
         notificationChannel: {
           connect: notificationChannel.map((id) => ({ id })),
         },
-        StatusPages: {
-          connect: { id: StatusPages },
-        },
+        ...(StatusPages && {
+          StatusPages: {
+            connect: { id: StatusPages },
+          },
+        }),
         clerkId,
         isActive,
         method,
@@ -106,6 +110,32 @@ export const createMonitor = async (req: Request, res: Response) => {
     console.log("🚀 ~ createMonitor ~ error:", error);
     res.status(500).send({
       message: "Error while creating monitors",
+      error,
+    });
+  }
+};
+
+export const getMonitorNames = async (req: Request, res: Response) => {
+  try {
+    const clerkId = req.userId;
+    const Monitors = await prisma.monitors.findMany({
+      where: { clerkId: clerkId },
+      select: { id: true, name: true },
+    });
+    if (!Monitors) {
+      res.status(401).send({
+        message: "Monitors not found",
+      });
+      return;
+    }
+    res.status(200).send({
+      message: "Monitors found successfully",
+      Monitors,
+    });
+  } catch (error) {
+    console.log("🚀 ~ getMonitorNames ~ error:", error);
+    res.status(500).send({
+      message: "error while getting monitor names",
       error,
     });
   }

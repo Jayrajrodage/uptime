@@ -43,10 +43,10 @@ interface headers {
   key: string;
   value: string;
 }
-enum frequency {
-  "TenMin",
-  "TwentyMin",
-  "OneHr",
+export enum frequency {
+  TenMin = "TenMin",
+  TwentyMin = "TwentyMin",
+  OneHr = "OneHr",
 }
 export type CreateMonitorInput = {
   name: string;
@@ -76,4 +76,17 @@ export type Channel = {
   channel: string;
   channeldata: string;
   monitors: monitor[];
+};
+
+export type StatusPage = {
+  id: number;
+  title: string;
+  slug: string;
+  monitors?: monitor;
+};
+
+export type InputCreateStatusPage = {
+  title: string;
+  slug: string;
+  monitorId: number;
 };

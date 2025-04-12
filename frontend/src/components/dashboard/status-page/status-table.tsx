@@ -14,7 +14,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { type StatusPage } from "@/lib/utils";
+import { type StatusPage } from "@/lib/types";
 import { useTheme } from "@/provider/theme-provider";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,29 +32,21 @@ import {
 } from "lucide-react";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Link } from "react-router-dom";
+import CreateStatusPage from "./create-status-page";
+import { Badge } from "@/components/ui/badge";
 const columns: MRT_ColumnDef<StatusPage>[] = [
   {
     accessorKey: "title",
     header: "Title",
     Cell: ({ row }) => (
       <Link
-        to={`/dashboard/status-page/details/${row.original.id}`}
+        to={`/dashboard/status-pages/details/${row.original.id}`}
         className="hover:underline"
       >
         {row.original.title}
@@ -68,9 +60,14 @@ const columns: MRT_ColumnDef<StatusPage>[] = [
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <h1 className="hover:underline">{row.original.slug}</h1>
-            <ArrowUpRight />
+            <span className="inline-flex items-center gap-1 hover:underline cursor-pointer">
+              <a href={`https://${row.original.slug}`} target="_blank">
+                {row.original.slug}
+              </a>
+              <ArrowUpRight />
+            </span>
           </TooltipTrigger>
+
           <TooltipContent>
             <p>Visit page</p>
           </TooltipContent>
@@ -81,6 +78,11 @@ const columns: MRT_ColumnDef<StatusPage>[] = [
   {
     accessorKey: "monitor",
     header: "Monitors",
+    Cell: ({ row }) => (
+      <div>
+        <Badge variant={"secondary"}>{row.original.monitors?.name}</Badge>
+      </div>
+    ),
   },
 ];
 interface props {
@@ -125,58 +127,7 @@ const StatusTable = ({ Pages }: props) => {
               <Button variant={"default"}>Create</Button>
             </DrawerTrigger>
             <DrawerContent>
-              <div className="flex flex-col gap-7 p-5">
-                <div className="grid sm:grid-cols-3 grid-cols-1 gap-5">
-                  <div className="flex flex-col gap-1 col-span-1">
-                    <h4 className="font-medium text-foreground">
-                      Basic information
-                    </h4>
-                    <p className="text-muted-foreground text-sm">
-                      The public status page to update your users on service
-                      uptime.
-                    </p>
-                  </div>
-                  <div className="flex flex-col gap-3 col-span-2">
-                    <div className="flex flex-col gap-2 col-span-5">
-                      <Label htmlFor="Title">Title</Label>
-                      <Input type="text" id="Title" placeholder="Title" />
-                      <p className="text-muted-foreground">
-                        The title of your page.
-                      </p>
-                    </div>
-                    <div className="flex flex-col gap-2 col-span-5">
-                      <Label htmlFor="Slug">Slug</Label>
-                      <div className="flex">
-                        <Input type="text" id="Slug" placeholder="Slug" />
-                        <div className="dark:bg-gray-500 bg-gray-400 w-[10rem] flex justify-center items-center rounded-tr-lg rounded-ee-lg">
-                          .uptime.dev
-                        </div>
-                      </div>
-                      <p className="text-muted-foreground">
-                        The subdomain for your status page. At least 3 chars.
-                      </p>
-                    </div>
-                    <div className="flex flex-col gap-2 col-span-2">
-                      <Label htmlFor="email">Select moniters </Label>
-                      <Select defaultValue={"Lingo"}>
-                        <SelectTrigger className="w-full">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectItem value="Lingo">Lingo</SelectItem>
-                            <SelectItem value="Lingoq">Lingow</SelectItem>
-                            <SelectItem value="Lingoaad">Lingoaad</SelectItem>
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="flex justify-end py-2">
-                      <Button className="w-[10rem] h-10">Confirm</Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <CreateStatusPage />
             </DrawerContent>
           </Drawer>
         </div>

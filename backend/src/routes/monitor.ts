@@ -1,18 +1,11 @@
 import express from "express";
-
-import {
-  createPage,
-  deletePage,
-  getPageDetails,
-  getPages,
-  updatePage,
-} from "../controller/statusPages";
+import { createMonitor, getMonitorNames } from "../controller/monitor";
 
 const router = express.Router();
 
-router.post("/", createPage);
+router.post("/", createMonitor);
 
-// router.get("/", getPages);
+router.get("/names", getMonitorNames);
 
 // router.get("/:id", getPageDetails);
 

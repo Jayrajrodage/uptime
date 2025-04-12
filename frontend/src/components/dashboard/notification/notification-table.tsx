@@ -13,11 +13,10 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { Channel, notificationTableProps } from "@/lib/utils";
 import { useTheme } from "@/provider/theme-provider";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import DeleteChannel from "./delete-channel";
+import { Channel, notificationTableProps } from "@/lib/types";
 
 const columns: MRT_ColumnDef<Channel>[] = [
   {

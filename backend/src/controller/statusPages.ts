@@ -36,20 +36,34 @@ export const getPages = async (req: Request, res: Response) => {
 
 export const createPage = async (req: Request, res: Response) => {
   try {
-    const parsedData = PagesSchema.safeParse(req.body);
+    const parsedData = PagesSchema.safeParse(req.body.inputData);
     const clerkId = req.userId;
     if (!parsedData.success) {
-      const errorMessages = parsedData.error.issues.map((obj) => obj.message);
+      const errorMessages = parsedData.error.issues.map(
+        (obj) => `${obj.message}: ${obj.path[0]}`
+      );
       res.status(400).send({ message: errorMessages });
       return;
     }
+
     const { title, slug, monitorId } = parsedData.data;
+    const existingPage = await prisma.statusPages.findUnique({
+      where: { slug: `${slug}.uptime.com` },
+    });
+
+    if (existingPage) {
+      return res.status(409).send({
+        message: "Slug is already taken. Please choose a different one.",
+      });
+    }
     await prisma.statusPages.create({
       data: {
         title,
-        slug,
+        slug: `${slug}.uptime.com`,
         clerkId,
-        monitorId,
+        ...(monitorId && {
+          monitorId: monitorId,
+        }),
       },
     });
     res.status(201).send({

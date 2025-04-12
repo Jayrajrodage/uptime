@@ -7,7 +7,9 @@ export const createChannel = async (req: Request, res: Response) => {
     const parsedData = channelSchema.safeParse(req.body);
     const clerkId = req.userId;
     if (!parsedData.success) {
-      const errorMessages = parsedData.error.issues.map((obj) => obj.message);
+      const errorMessages = parsedData.error.issues.map(
+        (obj) => `${obj.message}: ${obj.path[0]}`
+      );
       res.status(400).send({ message: errorMessages });
       return;
     }
