@@ -72,7 +72,7 @@ export const PagesSchema = z.object({
     .string()
     .min(1, "slug must be at least 1 characters")
     .max(30, "slug must be less than 30 characters"),
-  monitorId: z.number().min(1, "Invalid monitor ID").optional(),
+  monitorId: z.number().min(1, "Invalid monitor ID").optional().nullable(),
 });
 
 export const MonitorSchema = z.object({

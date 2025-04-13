@@ -88,5 +88,5 @@ export type StatusPage = {
 export type InputCreateStatusPage = {
   title: string;
   slug: string;
-  monitorId: number;
+  monitorId: number | undefined;
 };

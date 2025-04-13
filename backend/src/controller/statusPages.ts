@@ -52,9 +52,10 @@ export const createPage = async (req: Request, res: Response) => {
     });
 
     if (existingPage) {
-      return res.status(409).send({
+      res.status(409).send({
         message: "Slug is already taken. Please choose a different one.",
       });
+      return;
     }
     await prisma.statusPages.create({
       data: {
@@ -80,7 +81,7 @@ export const createPage = async (req: Request, res: Response) => {
 
 export const updatePage = async (req: Request, res: Response) => {
   try {
-    const parsedData = PagesSchema.safeParse(req.body.data);
+    const parsedData = PagesSchema.safeParse(req.body);
     const { id } = req.params;
     if (!parsedData.success) {
       const errorMessages = parsedData.error.issues.map(
@@ -90,16 +91,26 @@ export const updatePage = async (req: Request, res: Response) => {
       return;
     }
     const { title, slug, monitorId } = parsedData.data;
+    const existingPage = await prisma.statusPages.findUnique({
+      where: { slug: `${slug}.uptime.com` },
+    });
+
+    if (existingPage && existingPage.id !== parseInt(id)) {
+      res.status(409).send({
+        message: "Slug is already taken. Please choose a different one.",
+      });
+      return;
+    }
     await prisma.statusPages.update({
       where: { id: parseInt(id) },
       data: {
         title,
-        slug,
-        monitorId,
+        slug: `${slug}.uptime.com`,
+        monitorId: monitorId,
       },
     });
     res.status(201).send({
-      message: "status page created successfully",
+      message: "status page updated successfully",
     });
   } catch (error) {
     console.log("🚀 ~ updatePage ~ error:", error);
@@ -120,6 +131,7 @@ export const getPageDetails = async (req: Request, res: Response) => {
           select: {
             id: true,
             name: true,
+            url: true,
           },
         },
       },
@@ -146,7 +158,29 @@ export const getPageDetails = async (req: Request, res: Response) => {
 export const deletePage = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    //TODO: before delete check if the page is used on any monitor
+    const statusPage = await prisma.statusPages.findUnique({
+      where: { id: parseInt(id) },
+      include: {
+        monitors: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    if (!statusPage) {
+      res.status(404).send({ message: "Status page not found" });
+      return;
+    }
+
+    if (statusPage.monitorId) {
+      res.status(400).send({
+        message: `Remove/unlink this status from ${statusPage.monitors?.name} monitor.`,
+      });
+      return;
+    }
     await prisma.statusPages.delete({ where: { id: parseInt(id) } });
     res.status(200).send({
       message: "status page deleted successfully",

@@ -1,4 +1,4 @@
-import { Channel } from "@/lib/utils";
+import { Channel } from "@/lib/types";
 import { type MRT_Row } from "material-react-table";
 import {
   AlertDialog,
