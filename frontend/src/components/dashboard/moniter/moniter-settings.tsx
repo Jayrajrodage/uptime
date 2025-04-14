@@ -16,17 +16,26 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { regions } from "@/lib/utils";
-import { CircleCheck } from "lucide-react";
 import { CustomTabPanel } from "../custom-panel";
+import { CreateMonitorInput } from "@/lib/types";
+import { useForm } from "react-hook-form";
 
 const MoniterSettings = () => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    control,
+    getValues,
+    formState: { errors, isValid },
+  } = useForm<CreateMonitorInput>({
+    mode: "onChange",
+  });
   const userTheme = useTheme();
-  const [value, setValue] = React.useState(0);
+  const [tabValue, setTabValue] = React.useState(0);
   const [selectedRegions, setSelectedRegions] = React.useState<string[]>([]);
   const [selectedChannels, setSelectedChannels] = React.useState<string[]>([]);
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
   const [headers, setHeaders] = React.useState([{ key: "", value: "" }]);
 
   const handleAddField = () => {
@@ -88,8 +97,10 @@ const MoniterSettings = () => {
           })}
         >
           <Tabs
-            value={value}
-            onChange={handleChange}
+            value={tabValue}
+            onChange={(event: React.SyntheticEvent, newValue: number) =>
+              setTabValue(newValue)
+            }
             textColor="inherit"
             variant="scrollable"
           >
@@ -100,7 +111,7 @@ const MoniterSettings = () => {
             <Tab className="!normal-case" label="Status Page" />
             <Tab className="!normal-case" label="Danger " />
           </Tabs>
-          <CustomTabPanel value={value} index={0}>
+          <CustomTabPanel value={tabValue} index={0}>
             <div className="flex flex-col gap-5">
               <div>
                 <div className="flex flex-col gap-1">
@@ -177,7 +188,7 @@ const MoniterSettings = () => {
               </div>
             </div>
           </CustomTabPanel>
-          <CustomTabPanel value={value} index={1}>
+          <CustomTabPanel value={tabValue} index={1}>
             <div className="flex flex-col gap-5">
               <div className="flex flex-col gap-1">
                 <h4 className="font-medium text-foreground">
@@ -224,7 +235,7 @@ const MoniterSettings = () => {
                       <div key={region.name} className="flex flex-col gap-3">
                         <h5 className="text-sm">{region.name}</h5>
                         <div className="grid grid-cols-3 gap-2 ">
-                          {region.subRegions.map((sub) => (
+                          {/* {region.subRegions.map((sub) => (
                             <Button
                               key={sub}
                               variant={
@@ -240,7 +251,7 @@ const MoniterSettings = () => {
                                 <CircleCheck />
                               ) : null}
                             </Button>
-                          ))}
+                          ))} */}
                         </div>
                       </div>
                     ))}
@@ -257,7 +268,7 @@ const MoniterSettings = () => {
               </div>
             </div>
           </CustomTabPanel>
-          <CustomTabPanel value={value} index={2}>
+          <CustomTabPanel value={tabValue} index={2}>
             <div className="flex flex-col gap-5">
               <div className="flex flex-col gap-1">
                 <h4 className="font-medium text-foreground">Timing Setting</h4>
@@ -284,7 +295,7 @@ const MoniterSettings = () => {
               </div>
             </div>
           </CustomTabPanel>
-          <CustomTabPanel value={value} index={3}>
+          <CustomTabPanel value={tabValue} index={3}>
             <div className="flex flex-col gap-5">
               <div className="flex flex-col gap-1">
                 <h4 className="font-medium text-foreground">Notifications</h4>
@@ -310,7 +321,7 @@ const MoniterSettings = () => {
               </div>
             </div>
           </CustomTabPanel>
-          <CustomTabPanel value={value} index={4}>
+          <CustomTabPanel value={tabValue} index={4}>
             <div className="flex flex-col gap-5">
               <div className="flex flex-col gap-1">
                 <div>
@@ -338,7 +349,7 @@ const MoniterSettings = () => {
               </div>
             </div>
           </CustomTabPanel>
-          <CustomTabPanel value={value} index={5}>
+          <CustomTabPanel value={tabValue} index={5}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-1">
                 <div>

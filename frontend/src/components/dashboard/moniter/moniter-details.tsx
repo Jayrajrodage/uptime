@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { BellOff, ChartLine, Globe, Settings, Table } from "lucide-react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import MoniterOverview from "./moniter-overview";
 import ResponseLogs from "./reponse-logs";
 import MoniterSettings from "./moniter-settings";
@@ -9,7 +9,6 @@ import DashboardLayout from "../layout";
 const MoniterDetails = () => {
   const navigate = useNavigate();
   const { section } = useParams();
-  const path = useLocation();
   return (
     <DashboardLayout>
       <div className="grid grid-cols-1 md:grid-cols-8 gap-3">
@@ -24,11 +23,14 @@ const MoniterDetails = () => {
               <Typography
                 variant="body1"
                 className={`flex gap-1 rounded-lg border px-4 py-3 font-mono text-sm cursor-pointer ${
-                  path.pathname.toLowerCase() ===
-                    "/dashboard/moniters/details/overview" &&
+                  location.pathname
+                    .toLowerCase()
+                    .startsWith("/dashboard/moniters/details/overview") &&
                   "dark:bg-gray-900 bg-gray-100"
                 }`}
-                onClick={() => navigate("/dashboard/moniters/details/overview")}
+                onClick={() =>
+                  navigate("/dashboard/moniters/details/overview/1")
+                }
               >
                 <ChartLine />
                 Overview
@@ -37,11 +39,12 @@ const MoniterDetails = () => {
               <Typography
                 variant="body1"
                 className={`flex gap-1 rounded-lg border px-4 py-3 font-mono text-sm cursor-pointer ${
-                  path.pathname.toLowerCase() ===
-                    "/dashboard/moniters/details/logs" &&
+                  location.pathname
+                    .toLowerCase()
+                    .startsWith("/dashboard/moniters/details/logs") &&
                   "dark:bg-gray-900 bg-gray-100"
                 }`}
-                onClick={() => navigate("/dashboard/moniters/details/logs")}
+                onClick={() => navigate("/dashboard/moniters/details/logs/1")}
               >
                 <Table />
                 Response logs
@@ -49,11 +52,14 @@ const MoniterDetails = () => {
               <Typography
                 variant="body1"
                 className={`flex gap-1 rounded-lg border px-4 py-3 font-mono text-sm cursor-pointer ${
-                  path.pathname.toLowerCase() ===
-                    "/dashboard/moniters/details/settings" &&
+                  location.pathname
+                    .toLowerCase()
+                    .startsWith("/dashboard/moniters/details/settings") &&
                   "dark:bg-gray-900 bg-gray-100"
                 }`}
-                onClick={() => navigate("/dashboard/moniters/details/settings")}
+                onClick={() =>
+                  navigate("/dashboard/moniters/details/settings/1")
+                }
               >
                 <Settings />
                 Settings

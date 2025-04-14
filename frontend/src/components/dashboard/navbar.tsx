@@ -1,10 +1,9 @@
 import { UserButton } from "@clerk/clerk-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import { ModeToggle } from "../ui/mode-toggle";
 
 const DashboardNavbar = () => {
-  const location = useLocation();
   return (
     <div className="flex flex-col gap-2 rounded-xl border border-border  bg-background/70 px-3 pt-3 pb-1 backdrop-blur-lg ">
       <div className="flex justify-between">

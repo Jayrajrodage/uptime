@@ -134,7 +134,28 @@ export const updateChannel = async (req: Request, res: Response) => {
 export const deleteChannel = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    //TODO: before delete check if the channel is used on any monitor
+    const notificationChannel = await prisma.notificationChannels.findUnique({
+      where: { id: parseInt(id) },
+      include: {
+        monitors: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    if (!notificationChannel) {
+      res.status(404).send({ message: "notification channel not found" });
+      return;
+    }
+
+    if (notificationChannel.monitors.length > 0) {
+      res.status(400).send({
+        message: `Remove/unlink notification channel from monitors.`,
+      });
+      return;
+    }
     await prisma.notificationChannels.delete({ where: { id: parseInt(id) } });
     res.status(200).send({
       message: "Channel deleted successfully",

@@ -71,7 +71,6 @@ model Monitors {
   method              String
   frequency           Frequency
   subRegions          SubRegion[]    @relation("SubRegionsMonitors")
-  // Custom timeout for this monitor in milliseconds
   timeout             Int                    @default(45000)
   created_at          DateTime               @default(now())
   updated_at          DateTime               @updatedAt

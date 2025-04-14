@@ -41,7 +41,7 @@ function App() {
             element={<PaymentSuccess />}
           />
           <Route
-            path="/dashboard/moniters/details/:section"
+            path="/dashboard/moniters/details/:section/:id"
             element={<MoniterDetails />}
           />
           <Route

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,7 +13,6 @@ import {
 import { InputCreateStatusPage } from "@/lib/types";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { getMonitorNames } from "@/api/monitor";
 import Loader from "@/components/ui/loader";
 import ErrorComponent from "@/components/ui/error";
