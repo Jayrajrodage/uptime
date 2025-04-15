@@ -29,6 +29,7 @@ enum Channel {
 enum Frequency {
   TenMin    @map("10m")
   TwentyMin @map("20m")
+  ThirtyMin @map("30m")
   OneHr     @map("1Hr")
 }
 

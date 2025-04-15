@@ -13,12 +13,12 @@ import Request from "./create/request";
 import ScheduleRegion from "./create/schedule-region";
 import Timing from "./create/timing";
 import NotificationChannel from "./create/notification-channel";
-import StatusPage from "./create/status-page";
 import { Button } from "@/components/ui/button";
 import { Bug, Send } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { crateMonitor } from "@/api/monitor";
+import { crateMonitor, testUrl } from "@/api/monitor";
 import { toast } from "sonner";
+import StatusPage from "./create/status-page";
 const CreateMonitor = () => {
   const {
     register,
@@ -35,7 +35,7 @@ const CreateMonitor = () => {
       notificationChannel: [],
       isActive: true,
       method: "GET",
-      frequency: frequency.TenMin,
+      frequency: frequency.OneHr,
     },
   });
   const queryClient = useQueryClient();
@@ -155,7 +155,6 @@ const CreateMonitor = () => {
             />
             <Tab className={`!normal-case`} label="Notifications" />
             <Tab className="!normal-case" label="Status Page" />
-            {/* <Tab className="!normal-case" label="Danger " /> */}
           </Tabs>
           <CustomTabPanel value={tabValue} index={0}>
             <Request register={register} errors={errors} control={control} />
@@ -176,35 +175,19 @@ const CreateMonitor = () => {
             <NotificationChannel getValues={getValues} setValue={setValue} />
           </CustomTabPanel>
           <CustomTabPanel value={tabValue} index={4}>
-            <StatusPage control={control} />
+            <StatusPage getValues={getValues} setValue={setValue} />
           </CustomTabPanel>
-          {/* <CustomTabPanel value={tabValue} index={5}>
-            <div className="flex flex-col gap-6">
-              <div className="flex flex-col gap-1">
-                <div>
-                  <h4 className="font-medium text-foreground">Danger Zone</h4>
-                  <p className="text-muted-foreground text-sm">
-                    Be aware of the changes you are about to make.
-                  </p>
-                </div>
-                <div className="flex items-center justify-start gap-5 mt-5">
-                  <Button className="bg-red-600 hover:bg-red-400">
-                    Delete
-                  </Button>
-                  <p className="text-red-500">
-                    This action cannot be undone. This will permanently delete
-                    the monitor.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </CustomTabPanel> */}
         </ThemeProvider>
       </div>
       {tabValue === 0 && (
         <div className="flex items-end justify-end">
           <div className="flex gap-2">
-            <Button size={"lg"} variant={"ghost"}>
+            <Button
+              onClick={() => testUrl(getValues("url"))}
+              size={"lg"}
+              variant={"ghost"}
+              type="button"
+            >
               Test
               <Send />
             </Button>

@@ -1,5 +1,11 @@
 import express from "express";
-import { createMonitor, getMonitorNames } from "../controller/monitor";
+import {
+  createMonitor,
+  deleteMonitor,
+  getMonitorDetails,
+  getMonitorNames,
+  updateMonitor,
+} from "../controller/monitor";
 
 const router = express.Router();
 
@@ -7,10 +13,10 @@ router.post("/", createMonitor);
 
 router.get("/names", getMonitorNames);
 
-// router.get("/:id", getPageDetails);
+router.get("/:id", getMonitorDetails);
 
-// router.put("/:id", updatePage);
+router.put("/:id", updateMonitor);
 
-// router.delete("/:id", deletePage);
+router.delete("/:id", deleteMonitor);
 
 export default router;

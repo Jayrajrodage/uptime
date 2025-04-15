@@ -73,9 +73,14 @@ const ScheduleRegion = ({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="TenMin">10 minutes</SelectItem>
-                    <SelectItem value="TwentyMin">20 minutes</SelectItem>
                     <SelectItem value="OneHr">1 hour</SelectItem>
+                    <SelectItem value="ThirtyMin">30 minutes</SelectItem>
+                    <SelectItem disabled value="TwentyMin">
+                      20 minutes (coming soon)
+                    </SelectItem>
+                    <SelectItem disabled value="TenMin">
+                      10 minutes (coming soon)
+                    </SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>

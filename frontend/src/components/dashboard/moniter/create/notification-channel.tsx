@@ -1,5 +1,4 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import ErrorComponent from "@/components/ui/error";
 import Loader from "@/components/ui/loader";
 import { useChannels } from "@/hooks/useChannels";
@@ -54,8 +53,11 @@ const NotificationChannel = ({ getValues, setValue }: props) => {
                       >
                         <div className="flex flex-row p-2 items-center justify-between">
                           <div className="flex gap-1">
-                            <h1> {notifi.name}</h1>
-                            <Badge variant={"secondary"}>
+                            <h6>{notifi.name}</h6>
+                            <Badge
+                              className="hidden sm:block"
+                              variant={"secondary"}
+                            >
                               {notifi.channel}
                             </Badge>
                           </div>

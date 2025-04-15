@@ -93,7 +93,7 @@ export const MonitorSchema = z.object({
       })
     )
     .default([]),
-  frequency: z.enum(["TenMin", "TwentyMin", "OneHr"], {
+  frequency: z.enum(["TenMin", "TwentyMin", "ThirtyMin", "OneHr"], {
     required_error: "Frequency is required",
     invalid_type_error: "Invalid frequency value",
   }),
@@ -104,7 +104,7 @@ export const MonitorSchema = z.object({
   notificationChannel: z
     .array(z.number().min(1, "Invalid notification channel"))
     .default([]),
-  StatusPages: z.number().min(1, "Invalid status page").optional(),
+  StatusPages: z.number().min(1, "Invalid status page").optional().nullable(),
   isActive: z.boolean().default(true),
   method: z
     .string()

@@ -119,7 +119,7 @@ export const getMonitorNames = async (req: Request, res: Response) => {
   try {
     const clerkId = req.userId;
     const Monitors = await prisma.monitors.findMany({
-      where: { clerkId: clerkId },
+      where: { clerkId: clerkId, isDeleted: false },
       select: { id: true, name: true },
     });
     if (!Monitors) {
@@ -136,6 +136,170 @@ export const getMonitorNames = async (req: Request, res: Response) => {
     console.log("🚀 ~ getMonitorNames ~ error:", error);
     res.status(500).send({
       message: "error while getting monitor names",
+      error,
+    });
+  }
+};
+
+export const getMonitorDetails = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const Monitor = await prisma.monitors.findFirst({
+      where: { id: parseInt(id), isDeleted: false },
+      include: {
+        subRegions: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        notificationChannel: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        StatusPages: {
+          select: {
+            id: true,
+            title: true,
+            slug: true,
+          },
+        },
+      },
+    });
+    if (!Monitor) {
+      res.status(401).send({
+        message: "Monitor not found",
+      });
+      return;
+    }
+    res.status(200).send({
+      message: "Monitor found successfully",
+      Monitor,
+    });
+  } catch (error) {
+    console.log("🚀 ~ getMonitorDetails ~ error:", error);
+    res.status(500).send({
+      message: "error while getting monitor",
+      error,
+    });
+  }
+};
+
+export const updateMonitor = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const parsedData = MonitorSchema.safeParse(req.body.data);
+    if (!parsedData.success) {
+      const errorMessages = parsedData.error.issues.map(
+        (obj) => `${obj.message}: ${obj.path[0]}`
+      );
+      res.status(400).send({ message: errorMessages });
+      return;
+    }
+    const {
+      name,
+      url,
+      headers,
+      frequency,
+      subRegions,
+      timeout,
+      notificationChannel,
+      StatusPages,
+      isActive,
+      method,
+    } = parsedData.data;
+
+    await prisma.monitors.update({
+      where: { id: parseInt(id) },
+      data: {
+        name,
+        url,
+        headers,
+        frequency,
+        subRegions: {
+          connect: subRegions.map((id) => ({ id })),
+        },
+        timeout,
+        notificationChannel: {
+          connect: notificationChannel.map((id) => ({ id })),
+        },
+        ...(StatusPages && {
+          StatusPages: {
+            connect: { id: StatusPages },
+          },
+        }),
+        isActive,
+        method,
+      },
+    });
+    res.status(201).send({
+      message: "Monitor updated successfully",
+    });
+  } catch (error) {
+    console.log("🚀 ~ updateMonitor ~ error:", error);
+    res.status(500).send({
+      message: "Error while updating monitors",
+      error,
+    });
+  }
+};
+
+export const deleteMonitor = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const monitorId = parseInt(id);
+
+    // Check if monitor exists
+    const monitor = await prisma.monitors.findUnique({
+      where: { id: monitorId },
+      include: {
+        StatusPages: {
+          select: {
+            id: true,
+          },
+        },
+        notificationChannel: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    if (!monitor) {
+      res.status(404).send({ message: "Monitor not found" });
+      return;
+    }
+
+    if (monitor.StatusPages) {
+      res.status(400).send({
+        message: "Cannot delete monitor linked to a status page",
+      });
+      return;
+    }
+
+    if (monitor.notificationChannel.length > 0) {
+      res.status(400).send({
+        message: "Cannot delete monitor linked to a notification channel",
+      });
+      return;
+    }
+    // Soft delete the monitor
+    await prisma.monitors.update({
+      where: { id: monitorId },
+      data: {
+        isDeleted: true,
+        isActive: false,
+      },
+    });
+
+    res.status(200).send({ message: "Monitor deleted successfully" });
+  } catch (error) {
+    console.error("🚀 ~ deleteMonitor ~ error:", error);
+    res.status(500).send({
+      message: "Error while deleting monitor",
       error,
     });
   }

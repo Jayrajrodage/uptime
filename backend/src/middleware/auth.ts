@@ -11,14 +11,6 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
     return;
   }
   const decodedToken = jwtDecode<{ exp: number; sub: string }>(token);
-  const nowInSeconds = Math.floor(Date.now() / 1000);
-  if (decodedToken.exp < nowInSeconds) {
-    res.status(401).json({
-      success: false,
-      message: "Session expired",
-    });
-    return;
-  }
   const userId = decodedToken.sub;
   if (!userId) {
     res.status(401).json({

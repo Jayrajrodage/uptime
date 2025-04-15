@@ -46,6 +46,7 @@ interface headers {
 export enum frequency {
   TenMin = "TenMin",
   TwentyMin = "TwentyMin",
+  ThirtyMin = "ThirtyMin",
   OneHr = "OneHr",
 }
 export type CreateMonitorInput = {
@@ -57,18 +58,29 @@ export type CreateMonitorInput = {
   subRegions: number[];
   timeout: number;
   notificationChannel: number[];
-  StatusPages: number;
+  StatusPages: number | null;
   method: string;
-  monitor: number;
 };
 
 export interface notificationTableProps {
   channelData: Channel[];
 }
-interface monitor {
+interface subRegions {
+  id: number;
+  name: string;
+}
+export interface monitor {
   id: number;
   name: string;
   url: string;
+  isActive: boolean;
+  headers: headers[];
+  frequency: frequency;
+  subRegions: subRegions[];
+  timeout: number;
+  notificationChannel: Channel[];
+  method: string;
+  StatusPages?: StatusPage;
 }
 export type Channel = {
   id: number;

@@ -7,6 +7,7 @@ import statusPages from "./routes/statusPages";
 import monitor from "./routes/monitor";
 import { auth } from "./middleware/auth";
 import cookieParser from "cookie-parser";
+//import "./cron/cron";
 dotenv.config();
 
 const app = express();
