@@ -1,6 +1,5 @@
 import cron from "node-cron";
 
-// Helper to get current timestamp
 const logTime = (label: string) => {
   console.log(`[${label}] Job executed at: ${new Date().toLocaleString()}`);
 };
