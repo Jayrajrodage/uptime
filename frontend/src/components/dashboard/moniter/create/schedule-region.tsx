@@ -8,9 +8,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CreateMonitorInput, frequency } from "@/lib/types";
+import { CreateMonitorInput } from "@/lib/types";
 import { regions } from "@/lib/utils";
-import { CircleCheck, CircleX } from "lucide-react";
+import { CircleCheck } from "lucide-react";
 import {
   UseFormRegister,
   Control,
@@ -112,19 +112,26 @@ const ScheduleRegion = ({
                     const isSelected = (getValues("subRegions") || []).includes(
                       sub.id
                     );
-
+                    const isComingSoon = sub.ComingSoon;
                     return (
                       <div
+                        aria-disabled="true"
                         key={sub.id}
-                        onClick={() => toggleRegion(sub.id)}
-                        className={`border rounded-lg cursor-pointer ${
-                          isSelected ? "border-green-500" : "border-gray-300"
-                        }`}
+                        onClick={() => {
+                          if (!isComingSoon) toggleRegion(sub.id);
+                        }}
+                        className={`border rounded-lg transition-all cursor-pointer
+                        ${isSelected ? "border-green-500" : "border-gray-300"}
+                        ${isComingSoon ? "!cursor-not-allowed opacity-50" : ""}
+                        `}
                       >
                         <div className="flex flex-row p-2 items-center justify-between">
                           <div className="flex flex-col gap-1">
                             <h1>{sub.name}</h1>
                           </div>
+                          {isComingSoon && (
+                            <span className="text-xs">Coming soon</span>
+                          )}
                           {isSelected ? (
                             <CircleCheck className="text-green-500" />
                           ) : null}

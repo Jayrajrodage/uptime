@@ -196,48 +196,48 @@ export const regions = [
   {
     name: "North America",
     subRegions: [
-      { id: 1, name: "USA" },
-      { id: 2, name: "Canada" },
-      { id: 3, name: "Mexico" },
+      { id: 1, name: "USA", ComingSoon: false },
+      { id: 2, name: "Canada", ComingSoon: true },
+      { id: 3, name: "Mexico", ComingSoon: true },
     ],
   },
   {
     name: "Europe",
     subRegions: [
-      { id: 4, name: "Germany" },
-      { id: 5, name: "France" },
-      { id: 6, name: "UK" },
+      { id: 4, name: "Germany", ComingSoon: true },
+      { id: 5, name: "France", ComingSoon: true },
+      { id: 6, name: "UK", ComingSoon: false },
     ],
   },
   {
     name: "Asia",
     subRegions: [
-      { id: 7, name: "India" },
-      { id: 8, name: "China" },
-      { id: 9, name: "Japan" },
+      { id: 7, name: "India", ComingSoon: false },
+      { id: 8, name: "China", ComingSoon: true },
+      { id: 9, name: "Japan", ComingSoon: true },
     ],
   },
   {
     name: "South America",
     subRegions: [
-      { id: 10, name: "Brazil" },
-      { id: 11, name: "Argentina" },
-      { id: 12, name: "Chile" },
+      { id: 10, name: "Brazil", ComingSoon: false },
+      { id: 11, name: "Argentina", ComingSoon: true },
+      { id: 12, name: "Chile", ComingSoon: true },
     ],
   },
   {
     name: "Africa",
     subRegions: [
-      { id: 13, name: "Nigeria" },
-      { id: 14, name: "South Africa" },
-      { id: 15, name: "Kenya" },
+      { id: 13, name: "Nigeria", ComingSoon: true },
+      { id: 14, name: "South Africa", ComingSoon: false },
+      { id: 15, name: "Kenya", ComingSoon: true },
     ],
   },
   {
     name: "Oceania",
     subRegions: [
-      { id: 16, name: "Australia" },
-      { id: 17, name: "New Zealand" },
+      { id: 16, name: "Australia", ComingSoon: false },
+      { id: 17, name: "New Zealand", ComingSoon: true },
     ],
   },
 ];
