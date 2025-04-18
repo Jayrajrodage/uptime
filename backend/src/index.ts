@@ -7,6 +7,7 @@ import statusPages from "./routes/statusPages";
 import monitor from "./routes/monitor";
 import { auth } from "./middleware/auth";
 import cookieParser from "cookie-parser";
+import { createEmailAlert } from "./controller/monitor";
 //import "./cron/cron";
 dotenv.config();
 
@@ -27,7 +28,7 @@ app.use("/api/channel", auth, channel);
 //status pages
 app.use("/api/status-pages", auth, statusPages);
 //monitor
-app.use("/api/monitor", auth, monitor);
+app.use("/api/monitor", monitor);
 
 app.get("/", (req, res) => {
   // Send a response to the client

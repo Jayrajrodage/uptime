@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  createEmailAlert,
   createMonitor,
   deleteMonitor,
   getMonitorDetails,
@@ -18,5 +19,7 @@ router.get("/:id", getMonitorDetails);
 router.put("/:id", updateMonitor);
 
 router.delete("/:id", deleteMonitor);
+
+router.post("/alert", createEmailAlert);
 
 export default router;

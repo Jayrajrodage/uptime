@@ -111,3 +111,20 @@ export const MonitorSchema = z.object({
     .min(1, "method is required")
     .max(20, "method length is to big"),
 });
+export const MonitorAlertSchema = z.object({
+  name: z
+    .string()
+    .min(1, "name must be at least 1 characters")
+    .max(30, "name must be less than 30 characters"),
+  url: z
+    .string()
+    .min(1, "url must be at least 1 characters")
+    .max(50, "url must be less than 50 characters")
+    .url(),
+  subRegions: z.string(),
+  region: z.string(),
+  statusCode: z.number().max(1000),
+  message: z.string(),
+  timeStamp: z.string().transform((val) => new Date(val)),
+  monitorId: z.number(),
+});

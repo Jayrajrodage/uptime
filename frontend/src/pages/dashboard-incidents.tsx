@@ -5,7 +5,7 @@ import { AlertTriangle } from "lucide-react";
 const DashboardIncidents = () => {
   return (
     <DashboardLayout>
-      <div className="rounded-xl border border-border bg-background/70 px-3 py-4 backdrop-blur-lg">
+      <div className="rounded-xl h-screen border border-border bg-background/70 px-3 py-4 backdrop-blur-lg">
         <div className="flex flex-col gap-5">
           <div className="flex items-center justify-start py-1">
             <div className="">

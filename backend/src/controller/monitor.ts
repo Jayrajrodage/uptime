@@ -1,6 +1,12 @@
 import prisma from "../utils/db";
 import { Request, Response } from "express";
-import { MonitorSchema } from "../zod/schema";
+import { MonitorAlertSchema, MonitorSchema } from "../zod/schema";
+import { Resend } from "resend";
+import dotenv from "dotenv";
+dotenv.config();
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 export const getMonitors = async (req: Request, res: Response) => {
   try {
     const clerkId = req.userId;
@@ -300,6 +306,72 @@ export const deleteMonitor = async (req: Request, res: Response) => {
     console.error("🚀 ~ deleteMonitor ~ error:", error);
     res.status(500).send({
       message: "Error while deleting monitor",
+      error,
+    });
+  }
+};
+
+export const createEmailAlert = async (req: Request, res: Response) => {
+  try {
+    const parsedData = MonitorAlertSchema.safeParse(req.body);
+    if (!parsedData.success) {
+      const errorMessages = parsedData.error.issues.map(
+        (obj) => `${obj.message}: ${obj.path[0]}`
+      );
+      res.status(400).send({ message: errorMessages });
+      return;
+    }
+    const {
+      name,
+      url,
+      subRegions,
+      statusCode,
+      message,
+      timeStamp,
+      monitorId,
+      region,
+    } = parsedData.data;
+
+    const monitor = await prisma.monitors.findFirst({
+      where: { id: monitorId },
+      include: { notificationChannel: true },
+    });
+    if (!monitor) {
+      res.status(400).send({ message: "Monitor not found" });
+      return;
+    }
+    if (monitor.notificationChannel.length === 0) {
+      res.status(400).send({ message: "Notification Channel not found" });
+      return;
+    }
+    const emailIds = monitor.notificationChannel
+      .filter((channel) => channel.channel === "Email")
+      .map((channel) => channel.channeldata);
+
+    await resend.emails.send({
+      from: `${name} <onboarding@resend.dev>`,
+      to: emailIds,
+      subject: `🚨 Alert for Monitor: ${name}`,
+      html: `
+        <div>
+          <h2>Monitor Alert Triggered</h2>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>URL:</strong> ${url}</p>
+          <p><strong>Status Code:</strong> ${statusCode}</p>
+          <p><strong>Message:</strong> ${message}</p>
+          <p><strong>Regions:</strong> ${region}</p>
+          <p><strong>Sub Regions:</strong> ${subRegions}</p>
+          <p><strong>Time:</strong> ${new Date(timeStamp)}</p>
+        </div>
+      `,
+    });
+    res.status(201).send({
+      message: "Sent alert email",
+    });
+  } catch (error) {
+    console.log("🚀 ~ createEmailAlert ~ error:", error);
+    res.status(500).send({
+      message: "Error while creating email alert",
       error,
     });
   }
