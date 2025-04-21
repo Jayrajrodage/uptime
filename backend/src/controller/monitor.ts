@@ -1,11 +1,20 @@
 import prisma from "../utils/db";
+import nodemailer from "nodemailer";
 import { Request, Response } from "express";
 import { MonitorAlertSchema, MonitorSchema } from "../zod/schema";
-import { Resend } from "resend";
 import dotenv from "dotenv";
 dotenv.config();
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: "malaktel85@gmail.com",
+    pass: process.env.GMAIL_API,
+  },
+});
 
 export const getMonitors = async (req: Request, res: Response) => {
   try {
@@ -348,8 +357,8 @@ export const createEmailAlert = async (req: Request, res: Response) => {
       .filter((channel) => channel.channel === "Email")
       .map((channel) => channel.channeldata);
 
-    await resend.emails.send({
-      from: `${name} <onboarding@resend.dev>`,
+    const mailOptions = {
+      from: `uptime <malaktel85@gmail.com>`,
       to: emailIds,
       subject: `🚨 Alert for Monitor: ${name}`,
       html: `
@@ -364,7 +373,10 @@ export const createEmailAlert = async (req: Request, res: Response) => {
           <p><strong>Time:</strong> ${new Date(timeStamp)}</p>
         </div>
       `,
-    });
+    };
+
+   await transporter.sendMail(mailOptions);
+
     res.status(201).send({
       message: "Sent alert email",
     });

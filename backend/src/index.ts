@@ -28,9 +28,11 @@ app.use("/api/channel", auth, channel);
 //status pages
 app.use("/api/status-pages", auth, statusPages);
 //monitor
-app.use("/api/monitor", monitor);
+app.use("/api/monitor", auth, monitor);
 
 app.get("/", (req, res) => {
   // Send a response to the client
   res.status(200).send("Hello from uptime server!");
 });
+
+app.post("/api/alert", createEmailAlert);

@@ -20,6 +20,4 @@ router.put("/:id", updateMonitor);
 
 router.delete("/:id", deleteMonitor);
 
-router.post("/alert", createEmailAlert);
-
 export default router;
