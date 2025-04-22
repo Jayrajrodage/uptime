@@ -47,7 +47,7 @@ enum SubRegions {
   Argentina
   Chile
   Nigeria
-  SouthsAfrica @map("South Africa")
+  SouthAfrica @map("South Africa")
   Kenya
   Australia
   NewZealand     @map("New Zealand")

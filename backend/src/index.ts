@@ -8,7 +8,14 @@ import monitor from "./routes/monitor";
 import { auth } from "./middleware/auth";
 import cookieParser from "cookie-parser";
 import { createEmailAlert } from "./controller/monitor";
-//import "./cron/cron";
+import {
+  initializeRedisClient,
+  redisClient,
+  uptimeQueue,
+} from "./utils/redisClient";
+import "./cron/cron";
+import "./worker/worker";
+import { startWorker } from "./worker/worker";
 dotenv.config();
 
 const app = express();
@@ -34,5 +41,15 @@ app.get("/", (req, res) => {
   // Send a response to the client
   res.status(200).send("Hello from uptime server!");
 });
-
+//TODO: test this endpoint on production
 app.post("/api/alert", createEmailAlert);
+
+const startApp = async () => {
+  await initializeRedisClient();
+  await startWorker();
+};
+
+// Start your application
+startApp().catch((err) => {
+  console.error("Error starting the app:", err);
+});

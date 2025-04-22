@@ -331,7 +331,7 @@ export const createEmailAlert = async (req: Request, res: Response) => {
       return;
     }
     const {
-      name,
+      key,
       url,
       subRegions,
       statusCode,
@@ -340,7 +340,10 @@ export const createEmailAlert = async (req: Request, res: Response) => {
       monitorId,
       region,
     } = parsedData.data;
-
+    if (key !== process.env.EmailAuth) {
+      res.status(401).send({ message: "Unauthorized: auth key not found" });
+      return;
+    }
     const monitor = await prisma.monitors.findFirst({
       where: { id: monitorId },
       include: { notificationChannel: true },
@@ -360,11 +363,11 @@ export const createEmailAlert = async (req: Request, res: Response) => {
     const mailOptions = {
       from: `uptime <malaktel85@gmail.com>`,
       to: emailIds,
-      subject: `🚨 Alert for Monitor: ${name}`,
+      subject: `🚨 Alert for Monitor: ${monitor.name}`,
       html: `
         <div>
           <h2>Monitor Alert Triggered</h2>
-          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Name:</strong> ${monitor.name}</p>
           <p><strong>URL:</strong> ${url}</p>
           <p><strong>Status Code:</strong> ${statusCode}</p>
           <p><strong>Message:</strong> ${message}</p>
@@ -375,7 +378,7 @@ export const createEmailAlert = async (req: Request, res: Response) => {
       `,
     };
 
-   await transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions);
 
     res.status(201).send({
       message: "Sent alert email",

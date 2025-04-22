@@ -112,10 +112,6 @@ export const MonitorSchema = z.object({
     .max(20, "method length is to big"),
 });
 export const MonitorAlertSchema = z.object({
-  name: z
-    .string()
-    .min(1, "name must be at least 1 characters")
-    .max(30, "name must be less than 30 characters"),
   url: z
     .string()
     .min(1, "url must be at least 1 characters")
@@ -127,4 +123,5 @@ export const MonitorAlertSchema = z.object({
   message: z.string(),
   timeStamp: z.string().transform((val) => new Date(val)),
   monitorId: z.number(),
+  key: z.string(),
 });
