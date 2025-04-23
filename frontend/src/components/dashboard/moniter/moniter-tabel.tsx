@@ -16,7 +16,6 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { type Person, data } from "@/lib/utils";
 import { useTheme } from "@/provider/theme-provider";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,10 +28,11 @@ import { ArrowDown, ArrowUp, ArrowUpDown, Check, Radio } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import CreateMonitor from "./create-monitor";
+import { monitor, MonitorQueryResult } from "@/lib/types";
 
-const columns: MRT_ColumnDef<Person>[] = [
+const columns: MRT_ColumnDef<monitor>[] = [
   {
-    accessorKey: "name.firstName",
+    accessorKey: "name",
     header: "Name",
     Header: () => (
       <div className="flex items-center gap-5">
@@ -47,57 +47,71 @@ const columns: MRT_ColumnDef<Person>[] = [
           <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
         </span>
         <Link
-          to={`/dashboard/moniters/details/overview/1`}
+          to={`/dashboard/moniters/details/overview/${row.original.id}`}
           className="hover:underline"
         >
-          {row.original.name.firstName}
+          {row.original.name}
         </Link>
       </div>
     ),
   },
   {
-    accessorKey: "name.lastName",
-    header: "Last 7 days",
+    accessorKey: "method",
+    header: "Method",
   },
   {
-    accessorKey: "address",
-    header: "Last ping",
+    accessorKey: "frequency",
+    header: "Frequency",
+    Cell: ({ row }) => (
+      <>{row.original.frequency === "ThirtyMin" ? "30 min" : "1 Hr"}</>
+    ),
   },
   {
-    accessorKey: "city",
-    header: "Uptime",
+    accessorKey: "subRegions",
+    header: "Sub Regions",
+    Cell: ({ row }) => <>{row.original.subRegions.length ?? 0}</>,
   },
   {
-    accessorKey: "state",
-    header: "P50",
+    accessorKey: "notificationChannel",
+    header: "Notification Channels",
+    Cell: ({ row }) => <>{row.original.notificationChannel.length ?? 0}</>,
   },
   {
-    accessorKey: "state",
-    header: "P75",
+    accessorKey: "StatusPages",
+    header: "Status Page",
+    Cell: ({ row }) => <>{row.original.StatusPages?.title}</>,
   },
   {
-    accessorKey: "state",
-    header: "P95",
-  },
-  {
-    accessorKey: "state",
-    header: "P99",
+    accessorKey: "isActive",
+    header: "Active",
+    Cell: ({ row }) => <>{row.original.isActive ? "Yes" : "No"}</>,
   },
 ];
-
-const MoniterTable = () => {
+type props = {
+  data: MonitorQueryResult;
+  pagination: { pageIndex: number; pageSize: number };
+  setPagination: React.Dispatch<
+    React.SetStateAction<{
+      pageIndex: number;
+      pageSize: number;
+    }>
+  >;
+};
+const MoniterTable = ({ data, pagination, setPagination }: props) => {
   const userTheme = useTheme();
   const table = useMaterialReactTable({
     columns,
-    data,
-    enableSorting: true, // Enable sorting globally
-    enableColumnFilters: true, // Enable column filtering
+    data: data.Monitors ?? [],
+    state: { pagination },
+    manualPagination: true,
+    rowCount: data?.pagination.total ?? 0,
+    onPaginationChange: setPagination,
+    enableSorting: true,
+    enableColumnFilters: true,
     initialState: {
-      pagination: { pageSize: 5, pageIndex: 0 },
       showGlobalFilter: true,
       showColumnFilters: true,
     },
-    //customize the MRT components
     muiPaginationProps: {
       rowsPerPageOptions: [5, 10, 15],
       variant: "outlined",

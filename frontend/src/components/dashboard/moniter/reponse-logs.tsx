@@ -14,7 +14,6 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { type Person, data } from "@/lib/utils";
 import { useTheme } from "@/provider/theme-provider";
 import { Button } from "@/components/ui/button";
 import {
@@ -53,7 +52,7 @@ const ResponseLogs = () => {
   const userTheme = useTheme();
   const table = useMaterialReactTable({
     columns,
-    data,
+    data: [],
     enableSorting: true, // Enable sorting globally
     enableColumnFilters: true, // Enable column filtering
     initialState: {

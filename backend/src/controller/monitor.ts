@@ -34,15 +34,16 @@ export const getMonitors = async (req: Request, res: Response) => {
           notificationChannel: {
             select: {
               id: true,
-              name: true,
-              channel: true,
-              channeldata: true,
+            },
+          },
+          subRegions: {
+            select: {
+              id: true,
             },
           },
           StatusPages: {
             select: {
               title: true,
-              slug: true,
             },
           },
         },
@@ -59,7 +60,6 @@ export const getMonitors = async (req: Request, res: Response) => {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit),
       },
     });
   } catch (error) {
@@ -225,7 +225,6 @@ export const updateMonitor = async (req: Request, res: Response) => {
       isActive,
       method,
     } = parsedData.data;
-
     await prisma.monitors.update({
       where: { id: parseInt(id) },
       data: {
@@ -234,17 +233,15 @@ export const updateMonitor = async (req: Request, res: Response) => {
         headers,
         frequency,
         subRegions: {
-          connect: subRegions.map((id) => ({ id })),
+          set: subRegions.map((id) => ({ id })),
         },
         timeout,
         notificationChannel: {
-          connect: notificationChannel.map((id) => ({ id })),
+          set: notificationChannel.map((id) => ({ id })),
         },
-        ...(StatusPages && {
-          StatusPages: {
-            connect: { id: StatusPages },
-          },
-        }),
+        StatusPages: StatusPages
+          ? { connect: { id: StatusPages } }
+          : { disconnect: true },
         isActive,
         method,
       },
@@ -387,6 +384,39 @@ export const createEmailAlert = async (req: Request, res: Response) => {
     console.log("🚀 ~ createEmailAlert ~ error:", error);
     res.status(500).send({
       message: "Error while creating email alert",
+      error,
+    });
+  }
+};
+
+export const getMonitorInfo = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const Monitor = await prisma.monitors.findFirst({
+      where: { id: parseInt(id), isDeleted: false },
+      select: {
+        name: true,
+        url: true,
+        frequency: true,
+        notificationChannel: true,
+        subRegions: true,
+        isActive: true,
+      },
+    });
+    if (!Monitor) {
+      res.status(401).send({
+        message: "Monitor not found",
+      });
+      return;
+    }
+    res.status(200).send({
+      message: "Monitor found successfully",
+      Monitor,
+    });
+  } catch (error) {
+    console.log("🚀 ~ getMonitorInfo ~ error:", error);
+    res.status(500).send({
+      message: "error while getting monitor info",
       error,
     });
   }

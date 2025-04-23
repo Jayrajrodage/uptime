@@ -48,9 +48,7 @@ export const testUrl = async (url: string) => {
 
 export const updateMonitor = async (id: string, data: CreateMonitorInput) => {
   try {
-    await axios.get(data.url, {
-      timeout: 5000,
-    });
+    await axios.get(data.url, { timeout: 5000 });
     const res = await axios.put(
       `${import.meta.env.VITE_SERVER_URL}/api/monitor/${id}`,
       { data },
@@ -59,7 +57,7 @@ export const updateMonitor = async (id: string, data: CreateMonitorInput) => {
     return res.data.Monitor;
   } catch (error) {
     toast.error("Monitor URL is not reachable or invalid.");
-    throw new Error("Monitor URL is not reachable or invalid.");
+    throw Error();
   }
 };
 
@@ -69,5 +67,58 @@ export const deleteMonitor = async (id?: string) => {
     `${import.meta.env.VITE_SERVER_URL}/api/monitor/${id}`,
     { withCredentials: true }
   );
+  return res.data;
+};
+
+export const getMonitors = async ({
+  page = 1,
+  limit = 10,
+}: {
+  page?: number;
+  limit?: number;
+}) => {
+  const response = await axios.get(
+    `${import.meta.env.VITE_SERVER_URL}/api/monitor`,
+    {
+      params: { page, limit },
+      withCredentials: true,
+    }
+  );
+  return response.data;
+};
+
+export const getMonitorInfo = async (id: string) => {
+  const res = await axios.get(
+    `${import.meta.env.VITE_SERVER_URL}/api/monitor/info/${id}`,
+    { withCredentials: true }
+  );
+  return res.data.Monitor;
+};
+
+export const getLast24Stats = async (id: string) => {
+  const res = await axios.get(
+    `https://api.us-east.aws.tinybird.co/v0/pipes/last_24hr.ndjson?monitor_id=${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_TINYBIRD_API}`,
+      },
+    }
+  );
+  return res.data;
+};
+
+export const getLast24StatsByRegion = async (id: string) => {
+  const api = import.meta.env.VITE_TINYBIRD_API;
+
+  const res = await axios.get(
+    `https://api.us-east.aws.tinybird.co/v0/pipes/by_region.json?monitor_id=${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${api}`,
+      },
+    }
+  );
+
+  console.log("🚀 ~ getLast24StatsByRegion ~ res:", res);
   return res.data;
 };

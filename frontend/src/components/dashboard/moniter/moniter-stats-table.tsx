@@ -34,7 +34,7 @@ const CustomTooltip = ({ active, payload }: any) => {
         <p className="label">{name}</p>
         <div className="flex gap-2">
           <div className="bg-green-400 w-1" />
-          <p className="intro">{`UV: ${uv}`}</p>
+          <p className="intro">{`Latency: ${uv}`}</p>
         </div>
       </div>
     );
@@ -49,7 +49,7 @@ const columns: MRT_ColumnDef<MoniterTableStats>[] = [
     accessorKey: "Trend",
     header: "Trend",
     Cell: ({ cell }) => {
-      const trendData = cell.getValue<any>(); // Ensure the data is retrieved correctly
+      const trendData = cell.getValue(); // Ensure the data is retrieved correctly
 
       if (!Array.isArray(trendData)) return "No Data"; // Handle missing data
 
@@ -83,8 +83,11 @@ const columns: MRT_ColumnDef<MoniterTableStats>[] = [
     header: "P90",
   },
 ];
+interface props {
+  data: MoniterTableStats[];
+}
 
-const MoniterStatsTable = () => {
+const MoniterStatsTable = ({ data }: props) => {
   const userTheme = useTheme();
   const table = useMaterialReactTable({
     columns,

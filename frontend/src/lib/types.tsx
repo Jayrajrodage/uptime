@@ -11,9 +11,14 @@ export type statusWidget = {
   DayWiseRequests: statusWidgetArray[];
 };
 
+interface Trend {
+  timestamp: string;
+  durationMs: string;
+}
+
 export type MoniterTableStats = {
   Region: string;
-  Trend: any;
+  Trend: Trend[];
   P50: number;
   P95: number;
   P90: number;
@@ -102,3 +107,22 @@ export type InputCreateStatusPage = {
   slug: string;
   monitorId: number | undefined;
 };
+
+export interface MonitorQueryResult {
+  Monitors: monitor[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+  };
+}
+
+export interface last24HrStats {
+  success: number;
+  failed: number;
+  p50: number;
+  p75: number;
+  p90: number;
+  p95: number;
+  p99: number;
+}

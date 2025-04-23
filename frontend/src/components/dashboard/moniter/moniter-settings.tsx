@@ -11,7 +11,7 @@ import { CustomTabPanel } from "../custom-panel";
 import { CreateMonitorInput, monitor } from "@/lib/types";
 import { Controller, useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getMonitorDetails, testUrl, updateMonitor } from "@/api/monitor";
 import Request from "./create/request";
 import ScheduleRegion from "./create/schedule-region";
@@ -42,7 +42,7 @@ const MoniterSettings = () => {
     queryFn: () => getMonitorDetails(id!),
     enabled: !!id,
   });
-
+  const queryClient = useQueryClient();
   useEffect(() => {
     if (data) {
       reset({
@@ -72,6 +72,8 @@ const MoniterSettings = () => {
       loading: "Updating monitor...",
       success: async () => {
         refetch();
+        await queryClient.invalidateQueries({ queryKey: ["monitors"] });
+        await queryClient.invalidateQueries({ queryKey: ["monitorInfo"] });
         return "Monitor updated successfully!";
       },
       error: (error: any) => {
