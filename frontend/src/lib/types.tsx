@@ -126,3 +126,17 @@ export interface last24HrStats {
   p95: number;
   p99: number;
 }
+
+export interface logs {
+  date: Date;
+  statusCode: number;
+  latency: number;
+  Region: string;
+}
+
+export interface LogsQueryResult {
+  logs: logs[];
+  total: number;
+  offset: number;
+  page: number;
+}

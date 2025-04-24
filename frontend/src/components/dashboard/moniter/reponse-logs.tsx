@@ -23,14 +23,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ArrowDown, ArrowUp, ArrowUpDown, Check } from "lucide-react";
+import React, { useState } from "react";
+import { useResponseLogs } from "@/hooks/useResponseLogs";
+import { logs } from "@/lib/types";
+import { useParams } from "react-router-dom";
+import Loader from "@/components/ui/loader";
+import ErrorComponent from "@/components/ui/error";
+import ResponseLogsDetails from "./response-logs-details";
 
-const columns: MRT_ColumnDef<Person>[] = [
+const columns: MRT_ColumnDef<logs>[] = [
   {
-    accessorKey: "name.firstName",
+    accessorKey: "date",
     header: "Date",
+    Cell: ({ cell }) => <>{new Date(cell.getValue<any>()).toLocaleString()}</>,
   },
   {
-    accessorKey: "name.lastName",
+    accessorKey: "statusCode",
     header: "Status",
     Cell: ({ cell }) => (
       <div className="inline-flex items-center border rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 font-mono border-green-500/20 bg-green-500/10 text-green-800 dark:text-green-300">
@@ -39,33 +47,51 @@ const columns: MRT_ColumnDef<Person>[] = [
     ),
   },
   {
-    accessorKey: "address",
+    accessorKey: "latency",
     header: "Latency(ms)",
+    Cell: ({ cell }) => <>{parseInt(cell.getValue<any>()).toFixed()} ms</>,
   },
   {
-    accessorKey: "city",
+    accessorKey: "Region",
     header: "Region",
   },
 ];
 
 const ResponseLogs = () => {
   const userTheme = useTheme();
+  const { id } = useParams();
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
+
+  const { data, isLoading, isError, isSuccess } = useResponseLogs(
+    id!,
+    pagination.pageIndex + 1,
+    pagination.pageSize
+  );
   const table = useMaterialReactTable({
     columns,
-    data: [],
-    enableSorting: true, // Enable sorting globally
-    enableColumnFilters: true, // Enable column filtering
+    data: isSuccess ? data.logs : [],
+    state: { pagination, isLoading: isLoading },
+    manualPagination: true,
+    rowCount: data?.total ?? 0,
+    onPaginationChange: setPagination,
+    enableSorting: true,
+    enableColumnFilters: true,
     initialState: {
-      pagination: { pageSize: 5, pageIndex: 0 },
       showGlobalFilter: true,
       showColumnFilters: true,
     },
-    //customize the MRT components
     muiPaginationProps: {
       rowsPerPageOptions: [5, 10, 15],
       variant: "outlined",
     },
     paginationDisplayMode: "pages",
+    enableExpanding: true,
+    enableExpandAll: false,
+    renderDetailPanel: ({ row }) => (
+      <div style={{ padding: 20, background: "lightgray" }}>
+        Expanded content for row: {row.id}
+      </div>
+    ),
   });
   return (
     <div className="flex flex-col gap-2 mt-2">
@@ -76,99 +102,121 @@ const ResponseLogs = () => {
           },
         })}
       >
-        <div className="flex flex-col gap-5">
-          <TableContainer>
-            <Table>
-              <TableHead>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <TableCell align="left" variant="head" key={header.id}>
-                        {header.isPlaceholder ? null : (
-                          <div className="flex items-center gap-2">
-                            {/* Column Name */}
-                            {flexRender(
-                              header.column.columnDef.Header ??
-                                header.column.columnDef.header,
-                              header.getContext()
-                            )}
-
-                            {/* Sorting Dropdown Menu */}
-                            {header.column.getCanSort() && (
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="icon">
-                                    {header.column.getIsSorted() === "asc" ? (
-                                      <ArrowUp className="w-4 h-4" />
-                                    ) : header.column.getIsSorted() ===
-                                      "desc" ? (
-                                      <ArrowDown className="w-4 h-4" />
-                                    ) : (
-                                      <ArrowUpDown className="w-4 h-4" />
-                                    )}
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="start">
-                                  <DropdownMenuItem
-                                    onClick={() => header.column.clearSorting()}
-                                  >
-                                    <ArrowUpDown className="w-4 h-4 mr-2" />
-                                    Default
-                                    {!header.column.getIsSorted() && (
-                                      <Check className="w-4 h-4 ml-auto" />
-                                    )}
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem
-                                    onClick={() =>
-                                      header.column.toggleSorting(false)
-                                    }
-                                  >
-                                    <ArrowUp className="w-4 h-4 mr-2" /> Sort
-                                    Ascending
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem
-                                    onClick={() =>
-                                      header.column.toggleSorting(true)
-                                    }
-                                  >
-                                    <ArrowDown className="w-4 h-4 mr-2" /> Sort
-                                    Descending
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            )}
-                          </div>
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableHead>
-
-              <TableBody>
-                {table.getRowModel().rows.map((row, rowIndex) => (
-                  <TableRow key={row.id} selected={row.getIsSelected()}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell align="left" variant="body" key={cell.id}>
-                        {/* Use MRT's cell renderer that provides better logic than flexRender */}
-                        <MRT_TableBodyCellValue
-                          cell={cell}
-                          table={table}
-                          staticRowIndex={rowIndex}
-                          //just for batch row selection to work
-                        />
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-
-          <div className="flex justify-end">
-            <MRT_TablePagination table={table} />
+        {isLoading && (
+          <div className="flex h-screen justify-center items-center">
+            <Loader />
           </div>
-        </div>
+        )}
+
+        {isError && (
+          <div className="flex h-screen justify-center items-center">
+            <ErrorComponent />
+          </div>
+        )}
+
+        {isSuccess && (
+          <div className="flex flex-col gap-5">
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <TableCell align="left" variant="head" key={header.id}>
+                          {header.isPlaceholder ? null : (
+                            <div className="flex items-center gap-2">
+                              {flexRender(
+                                header.column.columnDef.Header ??
+                                  header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                              {header.column.getCanSort() && (
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" size="icon">
+                                      {header.column.getIsSorted() === "asc" ? (
+                                        <ArrowUp className="w-4 h-4" />
+                                      ) : header.column.getIsSorted() ===
+                                        "desc" ? (
+                                        <ArrowDown className="w-4 h-4" />
+                                      ) : (
+                                        <ArrowUpDown className="w-4 h-4" />
+                                      )}
+                                    </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent align="start">
+                                    <DropdownMenuItem
+                                      onClick={() =>
+                                        header.column.clearSorting()
+                                      }
+                                    >
+                                      <ArrowUpDown className="w-4 h-4 mr-2" />
+                                      Default
+                                      {!header.column.getIsSorted() && (
+                                        <Check className="w-4 h-4 ml-auto" />
+                                      )}
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                      onClick={() =>
+                                        header.column.toggleSorting(false)
+                                      }
+                                    >
+                                      <ArrowUp className="w-4 h-4 mr-2" /> Sort
+                                      Ascending
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                      onClick={() =>
+                                        header.column.toggleSorting(true)
+                                      }
+                                    >
+                                      <ArrowDown className="w-4 h-4 mr-2" />{" "}
+                                      Sort Descending
+                                    </DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              )}
+                            </div>
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableHead>
+
+                <TableBody>
+                  {table.getRowModel().rows.map((row, rowIndex) => (
+                    <React.Fragment key={row.id}>
+                      <TableRow selected={row.getIsSelected()}>
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell align="left" variant="body" key={cell.id}>
+                            <MRT_TableBodyCellValue
+                              cell={cell}
+                              table={table}
+                              staticRowIndex={rowIndex}
+                            />
+                          </TableCell>
+                        ))}
+                      </TableRow>
+
+                      {/* Expanded content row */}
+                      {row.getIsExpanded() && (
+                        <TableRow>
+                          <TableCell colSpan={columns.length + 1}>
+                            hello
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+
+            <div className="flex justify-end">
+              <MRT_TablePagination table={table} />
+            </div>
+          </div>
+        )}
       </ThemeProvider>
     </div>
   );

@@ -47,7 +47,7 @@ const MoniterDetails = () => {
                   "dark:bg-gray-900 bg-gray-100"
                 }`}
                 onClick={() =>
-                  navigate("/dashboard/moniters/details/overview/1")
+                  navigate(`/dashboard/moniters/details/overview/${id}`)
                 }
               >
                 <ChartLine />
@@ -62,7 +62,9 @@ const MoniterDetails = () => {
                     .startsWith("/dashboard/moniters/details/logs") &&
                   "dark:bg-gray-900 bg-gray-100"
                 }`}
-                onClick={() => navigate("/dashboard/moniters/details/logs/1")}
+                onClick={() =>
+                  navigate(`/dashboard/moniters/details/logs/${id}`)
+                }
               >
                 <Table />
                 Response logs
@@ -76,7 +78,7 @@ const MoniterDetails = () => {
                   "dark:bg-gray-900 bg-gray-100"
                 }`}
                 onClick={() =>
-                  navigate("/dashboard/moniters/details/settings/1")
+                  navigate(`/dashboard/moniters/details/settings/${id}`)
                 }
               >
                 <Settings />

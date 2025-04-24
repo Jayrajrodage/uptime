@@ -6,7 +6,7 @@ import {
   type MRT_ColumnDef,
   useMaterialReactTable,
 } from "material-react-table";
-import { ThemeProvider, createTheme } from "@mui/material";
+import { Box, ThemeProvider, createTheme } from "@mui/material";
 import {
   Table,
   TableBody,
@@ -22,13 +22,29 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ArrowDown, ArrowUp, ArrowUpDown, Check, Radio } from "lucide-react";
-import { Link } from "react-router-dom";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  Check,
+  EllipsisIcon,
+  EllipsisVertical,
+  InfoIcon,
+  Radio,
+  Settings,
+  Trash,
+} from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import CreateMonitor from "./create-monitor";
 import { monitor, MonitorQueryResult } from "@/lib/types";
+import { toast } from "sonner";
+import { useDeleteMonitor } from "@/hooks/useDeleteMonitor";
+import { onDeleteMonitor } from "@/lib/utils";
 
 const columns: MRT_ColumnDef<monitor>[] = [
   {
@@ -43,8 +59,16 @@ const columns: MRT_ColumnDef<monitor>[] = [
     Cell: ({ row }) => (
       <div className="flex items-center gap-5">
         <span className="relative flex h-2 w-2">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75 duration-1000"></span>
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
+          <span
+            className={`opacity-75 duration-1000 absolute inline-flex h-full w-full animate-ping rounded-full ${
+              row.original.isActive ? "bg-green-500" : "bg-red-500"
+            } `}
+          ></span>
+          <span
+            className={`relative inline-flex h-2 w-2 rounded-full ${
+              row.original.isActive ? "bg-green-500" : "bg-red-500"
+            }`}
+          ></span>
         </span>
         <Link
           to={`/dashboard/moniters/details/overview/${row.original.id}`}
@@ -99,6 +123,8 @@ type props = {
 };
 const MoniterTable = ({ data, pagination, setPagination }: props) => {
   const userTheme = useTheme();
+  const deleteMutation = useDeleteMonitor();
+  const navigate = useNavigate();
   const table = useMaterialReactTable({
     columns,
     data: data.Monitors ?? [],
@@ -116,7 +142,45 @@ const MoniterTable = ({ data, pagination, setPagination }: props) => {
       rowsPerPageOptions: [5, 10, 15],
       variant: "outlined",
     },
+
     paginationDisplayMode: "pages",
+    enableRowActions: true,
+    positionActionsColumn: "last",
+    renderRowActions: ({ row }) => [
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <EllipsisIcon size={20} />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem
+            onClick={() =>
+              navigate(
+                `/dashboard/moniters/details/overview/${row.original.id}`
+              )
+            }
+          >
+            <InfoIcon /> Details
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() =>
+              navigate(
+                `/dashboard/moniters/details/settings/${row.original.id}`
+              )
+            }
+          >
+            <Settings /> Settings
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() => onDeleteMonitor(row.original.id, deleteMutation)}
+            className="hover:!bg-red-800 hover:!text-white"
+            disabled={deleteMutation.isPending}
+          >
+            <Trash /> <span>Delete</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>,
+    ],
   });
 
   return (
@@ -127,7 +191,7 @@ const MoniterTable = ({ data, pagination, setPagination }: props) => {
         },
       })}
     >
-      <div className="rounded-xl border border-border bg-background/70 px-3 py-4 backdrop-blur-lg">
+      <div className="rounded-xl select-none border border-border bg-background/70 px-3 py-4 backdrop-blur-lg">
         <div className="flex flex-col gap-5">
           <div className="flex items-center justify-between py-1">
             <div className="">
@@ -158,7 +222,7 @@ const MoniterTable = ({ data, pagination, setPagination }: props) => {
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
-                      <TableCell align="left" variant="head" key={header.id}>
+                      <TableCell align="center" variant="head" key={header.id}>
                         {header.isPlaceholder ? null : (
                           <div className="flex items-center gap-2">
                             {/* Column Name */}

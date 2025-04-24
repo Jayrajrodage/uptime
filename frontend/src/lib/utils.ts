@@ -1,6 +1,9 @@
 import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { MoniterTableStats, statusWidget } from "./types";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
+import { deleteMonitor } from "@/api/monitor";
+import { toast } from "sonner";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -61,15 +64,6 @@ const ChartData = [
     pv: 4300,
     amt: 2100,
   },
-];
-
-export const MoniterStatsTableData: MoniterTableStats[] = [
-  { Region: "North America", Trend: ChartData, P50: 120, P95: 300, P90: 250 },
-  { Region: "Europe", Trend: ChartData, P50: 110, P95: 290, P90: 240 },
-  { Region: "Asia", Trend: ChartData, P50: 100, P95: 280, P90: 230 },
-  { Region: "South America", Trend: ChartData, P50: 90, P95: 270, P90: 220 },
-  { Region: "Africa", Trend: ChartData, P50: 80, P95: 260, P90: 210 },
-  { Region: "Oceania", Trend: ChartData, P50: 130, P95: 310, P90: 260 },
 ];
 
 export const regions = [
@@ -139,3 +133,31 @@ export const statusPagesDemo = [
   { title: "TriggerX", id: 1 },
   { title: "boss", id: 2 },
 ];
+
+export function getQuantile(data: number[], quantile: number): number {
+  if (!data.length) return 0;
+
+  const sorted = [...data].sort((a, b) => a - b);
+  const index = quantile * (sorted.length - 1);
+  const lower = Math.floor(index);
+  const upper = Math.ceil(index);
+
+  if (lower === upper) return sorted[lower];
+  return sorted[lower] + (sorted[upper] - sorted[lower]) * (index - lower);
+}
+
+export const onDeleteMonitor = (
+  id: any,
+  deleteMutation: UseMutationResult<any, Error, string, unknown>
+) => {
+  toast.promise(deleteMutation.mutateAsync(`${id}`), {
+    loading: "Deleting monitor...",
+    success: async () => {
+      return "Monitor deleted successfully!";
+    },
+    error: (error: any) => {
+      const responseErrors = error?.response?.data?.message;
+      return responseErrors || "Something went wrong";
+    },
+  });
+};

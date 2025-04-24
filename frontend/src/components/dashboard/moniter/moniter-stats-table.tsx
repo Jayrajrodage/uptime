@@ -13,7 +13,6 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { MoniterStatsTableData as data } from "@/lib/utils";
 import { useTheme } from "@/provider/theme-provider";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,13 +27,15 @@ import { MoniterTableStats } from "@/lib/types";
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
-    const { name, uv } = payload[0].payload; // Extract data of hovered point
+    const { timestamp, durationMs } = payload[0].payload; // Extract data of hovered point
     return (
       <div className="rounded-xl border border-border bg-background/70 px-3 py-4 backdrop-blur-lg">
-        <p className="label">{name}</p>
+        <p className="label">{new Date(timestamp).toLocaleString()}</p>
         <div className="flex gap-2">
           <div className="bg-green-400 w-1" />
-          <p className="intro">{`Latency: ${uv}`}</p>
+          <p className="intro">
+            {`Latency: ${parseInt(durationMs).toFixed()}`} Ms
+          </p>
         </div>
       </div>
     );
@@ -58,7 +59,7 @@ const columns: MRT_ColumnDef<MoniterTableStats>[] = [
           <LineChart data={trendData}>
             <Line
               type="monotone"
-              dataKey="pv"
+              dataKey="durationMs"
               stroke="#49fa46"
               strokeWidth={2}
               dot={false}

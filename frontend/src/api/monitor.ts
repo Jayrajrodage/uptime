@@ -1,4 +1,5 @@
 import { CreateMonitorInput } from "@/lib/types";
+import { getQuantile } from "@/lib/utils";
 import axios from "axios";
 import { toast } from "sonner";
 
@@ -109,7 +110,6 @@ export const getLast24Stats = async (id: string) => {
 
 export const getLast24StatsByRegion = async (id: string) => {
   const api = import.meta.env.VITE_TINYBIRD_API;
-
   const res = await axios.get(
     `https://api.us-east.aws.tinybird.co/v0/pipes/by_region.json?monitor_id=${id}`,
     {
@@ -119,6 +119,46 @@ export const getLast24StatsByRegion = async (id: string) => {
     }
   );
 
-  console.log("🚀 ~ getLast24StatsByRegion ~ res:", res);
-  return res.data;
+  const rawData = res.data?.data;
+
+  const enhanced = rawData.map((region: any) => {
+    const durations = region.Trend.map((t: any) =>
+      parseFloat(t.durationMs)
+    ).sort((a: number, b: number) => a - b);
+
+    const p50 = getQuantile(durations, 0.5);
+    const p90 = getQuantile(durations, 0.9);
+    const p95 = getQuantile(durations, 0.95);
+
+    return {
+      ...region,
+      P50: p50.toFixed(),
+      P90: p90.toFixed(),
+      P95: p95.toFixed(),
+    };
+  });
+
+  return enhanced;
+};
+
+export const getResponseLogs = async ({
+  monitor_id,
+  offset = 1,
+  limit = 10,
+}: {
+  monitor_id: string;
+  offset?: number;
+  limit?: number;
+}) => {
+  const api = import.meta.env.VITE_TINYBIRD_API;
+  const response = await axios.get(
+    `https://api.us-east.aws.tinybird.co/v0/pipes/monitor_logs.json`,
+    {
+      params: { monitor_id: parseInt(monitor_id), offset, limit },
+      headers: {
+        Authorization: `Bearer ${api}`,
+      },
+    }
+  );
+  return response.data?.data[0];
 };

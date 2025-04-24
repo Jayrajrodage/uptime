@@ -24,7 +24,6 @@ const MoniterOverview = () => {
     queryFn: () => getLast24StatsByRegion(id!),
     enabled: !!id,
   });
-  console.log("🚀 ~ MoniterOverview ~ data2:", data2);
 
   return (
     <>
@@ -188,9 +187,9 @@ const MoniterOverview = () => {
                 </div>
               </div>
               <p className="flex gap-1 text-muted-foreground text-xs">
-                Metrics calculated from the
+                Metrics calculated from
                 <span className="font-medium lowercase underline ">
-                  Last day.
+                  24 Hr's.
                 </span>
               </p>
               <div
