@@ -126,12 +126,20 @@ export interface last24HrStats {
   p95: number;
   p99: number;
 }
-
+export interface timing {
+  Dns: string;
+  Tls: string;
+  Transfer: string;
+  Ttfb: string;
+  Tcp: string;
+}
 export interface logs {
   date: Date;
   statusCode: number;
   latency: number;
   Region: string;
+  Headers: any;
+  Timings: any;
 }
 
 export interface LogsQueryResult {

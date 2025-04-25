@@ -4,7 +4,10 @@ import {
   flexRender,
   type MRT_ColumnDef,
   useMaterialReactTable,
+  MRT_TableDetailPanel,
 } from "material-react-table";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 import { ThemeProvider, createTheme } from "@mui/material";
 import {
   Table,
@@ -29,7 +32,9 @@ import { logs } from "@/lib/types";
 import { useParams } from "react-router-dom";
 import Loader from "@/components/ui/loader";
 import ErrorComponent from "@/components/ui/error";
-import ResponseLogsDetails from "./response-logs-details";
+import { CustomTabPanel } from "../custom-panel";
+import ResponseLogsHeaders from "./response-logs-headers";
+import ResponseLogsTimings from "./response-logs-timings";
 
 const columns: MRT_ColumnDef<logs>[] = [
   {
@@ -54,6 +59,7 @@ const columns: MRT_ColumnDef<logs>[] = [
   {
     accessorKey: "Region",
     header: "Region",
+    Cell: ({ cell }) => <>{cell.getValue<string>().replace(/A/g, " A")}</>,
   },
 ];
 
@@ -61,7 +67,7 @@ const ResponseLogs = () => {
   const userTheme = useTheme();
   const { id } = useParams();
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
-
+  const [tabValue, setTabValue] = React.useState(0);
   const { data, isLoading, isError, isSuccess } = useResponseLogs(
     id!,
     pagination.pageIndex + 1,
@@ -81,17 +87,13 @@ const ResponseLogs = () => {
       showColumnFilters: true,
     },
     muiPaginationProps: {
-      rowsPerPageOptions: [5, 10, 15],
+      rowsPerPageOptions: [5, 10],
       variant: "outlined",
     },
     paginationDisplayMode: "pages",
     enableExpanding: true,
     enableExpandAll: false,
-    renderDetailPanel: ({ row }) => (
-      <div style={{ padding: 20, background: "lightgray" }}>
-        Expanded content for row: {row.id}
-      </div>
-    ),
+    renderDetailPanel: () => true,
   });
   return (
     <div className="flex flex-col gap-2 mt-2">
@@ -202,7 +204,27 @@ const ResponseLogs = () => {
                       {row.getIsExpanded() && (
                         <TableRow>
                           <TableCell colSpan={columns.length + 1}>
-                            hello
+                            <Tabs
+                              value={tabValue}
+                              onChange={(event: any, value: number) =>
+                                setTabValue(value)
+                              }
+                              textColor="inherit"
+                              variant="scrollable"
+                            >
+                              <Tab className={`!normal-case`} label="Headers" />
+                              <Tab className={`!normal-case`} label="Timing" />
+                            </Tabs>
+                            <CustomTabPanel value={tabValue} index={0}>
+                              <ResponseLogsHeaders
+                                data={JSON.parse(row.original.Headers)}
+                              />
+                            </CustomTabPanel>
+                            <CustomTabPanel value={tabValue} index={1}>
+                              <ResponseLogsTimings
+                                data={JSON.parse(row.original.Timings)}
+                              />
+                            </CustomTabPanel>
                           </TableCell>
                         </TableRow>
                       )}

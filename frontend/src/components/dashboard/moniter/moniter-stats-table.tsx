@@ -55,7 +55,7 @@ const columns: MRT_ColumnDef<MoniterTableStats>[] = [
       if (!Array.isArray(trendData)) return "No Data"; // Handle missing data
 
       return (
-        <ResponsiveContainer width="100%" height={50}>
+        <ResponsiveContainer width="100%" height={70}>
           <LineChart data={trendData}>
             <Line
               type="monotone"
