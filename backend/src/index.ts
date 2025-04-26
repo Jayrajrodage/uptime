@@ -8,11 +8,7 @@ import monitor from "./routes/monitor";
 import { auth } from "./middleware/auth";
 import cookieParser from "cookie-parser";
 import { createEmailAlert } from "./controller/monitor";
-import {
-  initializeRedisClient,
-  redisClient,
-  uptimeQueue,
-} from "./utils/redisClient";
+import { initializeRedisClient } from "./utils/redisClient";
 import "./cron/cron";
 import "./worker/worker";
 import { startWorker } from "./worker/worker";
@@ -20,8 +16,26 @@ dotenv.config();
 
 const app = express();
 
+//Change the cors policy for prod
 // middleware
-app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, Postman)
+      if (!origin) return callback(null, true);
+
+      // Allow any subdomain of localhost:5173
+      const allowed = /^http:\/\/.*\.localhost:5173$/;
+
+      if (allowed.test(origin) || origin === "http://localhost:5173") {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 const port = process.env.PORT || 5000;

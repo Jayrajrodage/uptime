@@ -1,5 +1,6 @@
 export type statusWidgetArray = {
   TotalRequest: number;
+  TotalSuccuss: number;
   TotalFailed: number;
   Date: string;
 };
@@ -7,6 +8,7 @@ export type statusWidgetArray = {
 export type statusWidget = {
   TotalRequest: number;
   TotalFailed: number;
+  TotalSuccess: number;
   Name: string;
   DayWiseRequests: statusWidgetArray[];
 };
@@ -147,4 +149,10 @@ export interface LogsQueryResult {
   total: number;
   offset: number;
   page: number;
+}
+
+export enum currentStatus {
+  ALL_OPERATIONAL = "All Systems Operational",
+  PARTIAL_OUTAGE = "Partial System Outage",
+  MAJOR_OUTAGE = "Major System Outage",
 }

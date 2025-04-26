@@ -47,6 +47,7 @@ export const createPage = async (req: Request, res: Response) => {
     }
 
     const { title, slug, monitorId } = parsedData.data;
+    //TODO:change the slug.uptime.com domain after deployment
     const existingPage = await prisma.statusPages.findUnique({
       where: { slug: `${slug}.uptime.com` },
     });
@@ -91,6 +92,7 @@ export const updatePage = async (req: Request, res: Response) => {
       return;
     }
     const { title, slug, monitorId } = parsedData.data;
+    //TODO:change the slug.uptime.com domain after deployment
     const existingPage = await prisma.statusPages.findUnique({
       where: { slug: `${slug}.uptime.com` },
     });
@@ -191,5 +193,29 @@ export const deletePage = async (req: Request, res: Response) => {
       message: "error while deleting status page",
       error,
     });
+  }
+};
+
+export const getPageStats = async (req: Request, res: Response) => {
+  try {
+    const { slug } = req.params;
+    //TODO:change the slug.uptime.com domain after deployment
+    const page = await prisma.statusPages.findUnique({
+      where: { slug: `${slug}.uptime.com` },
+      include: { monitors: true },
+    });
+
+    if (!page) {
+      res.status(409).send({
+        message: "Slug not found.",
+      });
+      return;
+    }
+    res.status(200).send({
+      message: "status page found successfully",
+      page,
+    });
+  } catch (error) {
+    console.log("🚀 ~ getPageStats ~ error:", error);
   }
 };

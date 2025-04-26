@@ -2,6 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import { jwtDecode } from "jwt-decode";
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {
+  if (req.originalUrl.startsWith("/api/status-pages/data/")) {
+    return next();
+  }
   const token = req.cookies.__session;
   if (!token) {
     res.status(401).json({

@@ -44,3 +44,10 @@ export const deletePage = async (id: string) => {
   );
   return res.data;
 };
+
+export const getPageStats = async (slug: string) => {
+  const res = await axios.get(
+    `${import.meta.env.VITE_SERVER_URL}/api/status-pages/data/${slug}`
+  );
+  return res.data.page;
+};

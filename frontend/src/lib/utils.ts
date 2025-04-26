@@ -1,24 +1,35 @@
 import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { MoniterTableStats, statusWidget } from "./types";
-import { useMutation, UseMutationResult } from "@tanstack/react-query";
-import { deleteMonitor } from "@/api/monitor";
+import { currentStatus, statusWidget } from "./types";
+import { UseMutationResult } from "@tanstack/react-query";
 import { toast } from "sonner";
+import MainApp from "@/MainApp";
+import StatusPageApp from "@/StatusPage";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 // Example dummy data
-export const dummyStatusWidget: statusWidget = {
-  TotalRequest: 1000,
-  TotalFailed: 50,
-  Name: "Example Widget",
-  DayWiseRequests: Array.from({ length: 45 }, (_, index) => ({
-    TotalRequest: Math.floor(Math.random() * 100),
-    TotalFailed: Math.floor(Math.random() * 1.1),
+const dayWise = Array.from({ length: 45 }, (_, index) => {
+  const total = Math.floor(Math.random() * 100);
+  const failed = Math.floor(Math.random() * 1.1);
+  const success = total - failed;
+
+  return {
+    TotalRequest: total,
+    TotalFailed: failed,
+    TotalSuccuss: success,
     Date: `2025-03-${String(index + 1).padStart(2, "0")}`,
-  })),
+  };
+});
+
+export const dummyStatusWidget: statusWidget = {
+  Name: "Example Widget",
+  DayWiseRequests: dayWise,
+  TotalRequest: dayWise.reduce((acc, cur) => acc + cur.TotalRequest, 0),
+  TotalFailed: dayWise.reduce((acc, cur) => acc + cur.TotalFailed, 0),
+  TotalSuccess: dayWise.reduce((acc, cur) => acc + cur.TotalSuccuss, 0),
 };
 
 const ChartData = [
@@ -160,4 +171,30 @@ export const onDeleteMonitor = (
       return responseErrors || "Something went wrong";
     },
   });
+};
+
+export const getApp = () => {
+  const host = window.location.hostname;
+  const subDomain = getSubDomain(host);
+  if (!subDomain) return MainApp;
+  if (subDomain === "www") return MainApp;
+  return StatusPageApp;
+};
+
+const getSubDomain = (host: string): string | null => {
+  const parts = host.split(".");
+
+  // Handle localhost (e.g., trigger.localhost)
+  if (host.includes("localhost")) {
+    return parts.length > 1 ? parts[0] : null;
+  }
+
+  // Return the first part as subdomain (e.g., trigger.domain.com)
+  return parts[0];
+};
+
+const getCurrentStatus = (success: number, failed: number): currentStatus => {
+  if (failed === 0) return currentStatus.ALL_OPERATIONAL; // All good
+  if (success === 0) return currentStatus.MAJOR_OUTAGE; // Everything failed
+  return currentStatus.PARTIAL_OUTAGE; // Some failed, some succeeded
 };

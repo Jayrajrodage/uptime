@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { onPayment } from "@/api/profile";
 import Loader from "@/components/ui/loader";
-import { usePlans } from "@/provider/plan-provider";
+import { usePlan } from "@/hooks/usePlan";
 
 const plans = [
   {
@@ -27,11 +27,11 @@ const plans = [
 ];
 
 function BillingPage() {
-  const { isLoading: Loading, plan, Error } = usePlans();
+  const { isLoading: Loading, data: plan, error } = usePlan();
 
   return (
     <div className="container mx-auto px-4 py-12">
-      {Error ? (
+      {error ? (
         <div className="flex justify-center items-center text-red-500">
           Something went wrong
         </div>

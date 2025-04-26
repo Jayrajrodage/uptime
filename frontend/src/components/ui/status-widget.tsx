@@ -5,6 +5,7 @@ const StatusWidget = ({
   TotalRequest,
   Name,
   DayWiseRequests,
+  TotalSuccess,
 }: statusWidget) => {
   return (
     <div className="flex w-full flex-col gap-1.5">
@@ -18,9 +19,9 @@ const StatusWidget = ({
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="lucide lucide-info h-4 w-4"
             data-state="closed"
           >
@@ -30,7 +31,7 @@ const StatusWidget = ({
           </svg>
         </div>
         <p className="shrink-0 font-semibold">
-          {(((TotalRequest - TotalFailed) / TotalRequest) * 100).toFixed(2)}%
+          {((TotalSuccess / TotalRequest) * 100).toFixed(2)}%
         </p>
       </div>
       <div>

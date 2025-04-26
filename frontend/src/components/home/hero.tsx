@@ -1,4 +1,3 @@
-import { TextAnimate } from "../magicui/text-animate";
 import { ArrowRightIcon } from "lucide-react";
 import { AnimatedShinyText } from "../magicui/animated-shiny-text";
 
@@ -9,9 +8,9 @@ const hero = () => {
         <span>✨ Introducing Uptime</span>
         <ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
       </AnimatedShinyText>
-      <TextAnimate className="font-cal text-center text-4xl md:text-6xl bg-gradient-to-tl from-0% from-[hsl(var(--muted))] to-40% to-[hsl(var(--foreground))] bg-clip-text ">
+      <div className="font-cal text-center text-4xl md:text-6xl bg-gradient-to-tl from-0% from-[hsl(var(--muted))] to-40% to-[hsl(var(--foreground))] bg-clip-text font-bold">
         A better way to monitor your services.
-      </TextAnimate>
+      </div>
       <p className="mx-auto text-center max-w-md text-lg text-muted-foreground md:max-w-xl md:text-xl mt-4">
         Monitor your API and website globally, identify performance issues,
         downtime and receive alerts before your users are affected.

@@ -101,7 +101,7 @@ model NotificationChannels {
 
 model StatusPages {
   id        Int       @id @default(autoincrement())
-  title     String
+  title     String    
   slug      String    @unique
   monitorId Int?      @unique
   monitors  Monitors? @relation(fields: [monitorId], references: [id])

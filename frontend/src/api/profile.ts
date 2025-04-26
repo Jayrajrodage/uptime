@@ -2,20 +2,11 @@
 import axios from "axios";
 import { toast } from "sonner";
 export const getProfile = async () => {
-  try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_SERVER_URL}/api/profile`,
-      { withCredentials: true }
-    );
-    if (!response.data) {
-      toast.error("profile not found");
-      return undefined;
-    }
-    return response.data.Profile;
-  } catch (error: any) {
-    console.log("🚀 ~ getProfile ~ error:", error);
-    toast.error(error.response.data.message);
-  }
+  const response = await axios.get(
+    `${import.meta.env.VITE_SERVER_URL}/api/profile`,
+    { withCredentials: true }
+  );
+  return response.data?.Profile?.plan;
 };
 
 export const onPayment = async (id: string) => {
