@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useDeleteMonitor } from "@/hooks/useDeleteMonitor";
 import { onDeleteMonitor } from "@/lib/utils";
-import { toast } from "sonner";
 
 interface props {
   id?: string;

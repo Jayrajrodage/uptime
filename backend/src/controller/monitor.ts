@@ -3,6 +3,7 @@ import nodemailer from "nodemailer";
 import { Request, Response } from "express";
 import { MonitorAlertSchema, MonitorSchema } from "../zod/schema";
 import dotenv from "dotenv";
+import axios, { AxiosError } from "axios";
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
@@ -80,6 +81,24 @@ export const createMonitor = async (req: Request, res: Response) => {
         (obj) => `${obj.message}: ${obj.path[0]}`
       );
       res.status(400).send({ message: errorMessages });
+      return;
+    }
+
+    try {
+      await axios.get(parsedData.data.url);
+    } catch (error: any) {
+      res.status(400).send({
+        message: error?.message,
+      });
+      return;
+    }
+    const existingMonitor = await prisma.monitors.count({
+      where: { clerkId, isDeleted: false },
+    });
+    if (existingMonitor >= 2) {
+      res.status(403).send({
+        message: "Maximum limit 2 monitors",
+      });
       return;
     }
     const {
@@ -225,6 +244,14 @@ export const updateMonitor = async (req: Request, res: Response) => {
       isActive,
       method,
     } = parsedData.data;
+    try {
+      await axios.get(parsedData.data.url);
+    } catch (error: any) {
+      res.status(400).send({
+        message: "Monitor is unreachable",
+      });
+      return;
+    }
     await prisma.monitors.update({
       where: { id: parseInt(id) },
       data: {

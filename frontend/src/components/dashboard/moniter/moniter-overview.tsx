@@ -51,7 +51,7 @@ const MoniterOverview = () => {
                           {(
                             (data.success / (data.failed + data.success)) *
                             100
-                          ).toFixed()}
+                          )?.toFixed() ?? 0}
                         </code>
                         <span className="self-center text-muted-foreground text-xs">
                           %
@@ -71,7 +71,7 @@ const MoniterOverview = () => {
                           {(
                             (data.failed / (data.failed + data.success)) *
                             100
-                          ).toFixed()}
+                          )?.toFixed() ?? 0}
                         </code>
                         <span className="self-center text-muted-foreground text-xs">
                           #
@@ -89,7 +89,7 @@ const MoniterOverview = () => {
                     <div className="flex flex-1 flex-wrap items-center gap-2">
                       <p className="flex">
                         <code className="mr-1 font-mono font-semibold text-xl">
-                          {data.failed + data.success}
+                          {(data.failed ?? 0) + (data.success ?? 0)}
                         </code>
                         <span className="self-center text-muted-foreground text-xs">
                           #
@@ -108,7 +108,7 @@ const MoniterOverview = () => {
                     <div className="flex flex-1 flex-wrap items-center gap-2">
                       <p className="flex">
                         <code className="mr-1 font-mono font-semibold text-xl empty:mr-0">
-                          {data.p50.toFixed()}
+                          {(data.p50 ?? 0).toFixed()}
                         </code>
                         <span className="self-center text-muted-foreground text-xs">
                           ms
@@ -125,7 +125,7 @@ const MoniterOverview = () => {
                     <div className="flex flex-1 flex-wrap items-center gap-2">
                       <p className="flex">
                         <code className="mr-1 font-mono font-semibold text-xl empty:mr-0">
-                          {data.p75.toFixed()}
+                          {(data.p75 ?? 0).toFixed()}
                         </code>
                         <span className="self-center text-muted-foreground text-xs">
                           ms
@@ -142,7 +142,7 @@ const MoniterOverview = () => {
                     <div className="flex flex-1 flex-wrap items-center gap-2">
                       <p className="flex">
                         <code className="mr-1 font-mono font-semibold text-xl empty:mr-0">
-                          {data.p90.toFixed()}
+                          {(data.p90 ?? 0).toFixed()}
                         </code>
                         <span className="self-center text-muted-foreground text-xs">
                           ms
@@ -159,7 +159,7 @@ const MoniterOverview = () => {
                     <div className="flex flex-1 flex-wrap items-center gap-2">
                       <p className="flex">
                         <code className="mr-1 font-mono font-semibold text-xl empty:mr-0">
-                          {data.p95.toFixed()}
+                          {(data.p95 ?? 0).toFixed()}
                         </code>
                         <span className="self-center text-muted-foreground text-xs">
                           ms
@@ -176,7 +176,7 @@ const MoniterOverview = () => {
                     <div className="flex flex-1 flex-wrap items-center gap-2">
                       <p className="flex">
                         <code className="mr-1 font-mono font-semibold text-xl empty:mr-0">
-                          {data.p99.toFixed()}
+                          {(data.p99 ?? 0).toFixed()}
                         </code>
                         <span className="self-center text-muted-foreground text-xs">
                           ms

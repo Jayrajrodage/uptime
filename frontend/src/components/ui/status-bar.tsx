@@ -11,7 +11,6 @@ type props = {
 };
 
 const StatusBar = ({ DayWiseRequests }: props) => {
-  console.log("🚀 ~ StatusBar ~ DayWiseRequests:", DayWiseRequests);
   return (
     <div className="flex flex-row-reverse gap-[3px] sm:gap-0.5">
       {DayWiseRequests.map((day, id) => (

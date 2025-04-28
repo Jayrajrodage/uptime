@@ -49,7 +49,6 @@ const CreateMonitor = () => {
       loading: "Creating monitor...",
       success: async () => {
         reset();
-        //TODO: recall the monitor to get the new monitor the table
         await queryClient.invalidateQueries({ queryKey: ["monitors"] });
         return "Monitor crated successfully!";
       },

@@ -150,12 +150,6 @@ export interface LogsQueryResult {
   page: number;
 }
 
-export enum currentStatus {
-  ALL_OPERATIONAL = "All Systems Operational",
-  PARTIAL_OUTAGE = "Partial System Outage",
-  MAJOR_OUTAGE = "Major System Outage",
-}
-
 export type StatusPageWStats = {
   page: StatusPage;
   dayWiseStats?: statusWidgetArray[];

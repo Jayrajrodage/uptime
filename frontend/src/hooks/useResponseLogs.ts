@@ -1,6 +1,6 @@
 import { getResponseLogs } from "@/api/monitor";
 import { LogsQueryResult } from "@/lib/types";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export const useResponseLogs = (
   monitor_id: string,
@@ -10,8 +10,6 @@ export const useResponseLogs = (
   return useQuery<LogsQueryResult>({
     queryKey: ["responseLogs", offset, limit],
     queryFn: () => getResponseLogs({ monitor_id, offset, limit }),
-    placeholderData: keepPreviousData,
-    staleTime: 1000 * 60 * 1,
     enabled: !!monitor_id,
   });
 };

@@ -16,7 +16,7 @@ dotenv.config();
 
 const app = express();
 
-//Change the cors policy for prod
+//TODO:Change the cors policy for prod
 // middleware
 app.use(
   cors({

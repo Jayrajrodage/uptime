@@ -4,20 +4,12 @@ import axios from "axios";
 import { toast } from "sonner";
 
 export const crateMonitor = async (inputData: CreateMonitorInput) => {
-  try {
-    await axios.get(inputData.url, {
-      timeout: 5000,
-    });
-    const { data } = await axios.post(
-      `${import.meta.env.VITE_SERVER_URL}/api/monitor`,
-      { inputData },
-      { withCredentials: true }
-    );
-    return data;
-  } catch (error) {
-    toast.error("Monitor URL is not reachable or invalid.");
-    throw new Error("Monitor URL is not reachable or invalid.");
-  }
+  const { data } = await axios.post(
+    `${import.meta.env.VITE_SERVER_URL}/api/monitor`,
+    { inputData },
+    { withCredentials: true }
+  );
+  return data;
 };
 
 export const getMonitorNames = async () => {
@@ -48,18 +40,12 @@ export const testUrl = async (url: string) => {
 };
 
 export const updateMonitor = async (id: string, data: CreateMonitorInput) => {
-  try {
-    await axios.get(data.url, { timeout: 5000 });
-    const res = await axios.put(
-      `${import.meta.env.VITE_SERVER_URL}/api/monitor/${id}`,
-      { data },
-      { withCredentials: true }
-    );
-    return res.data.Monitor;
-  } catch (error) {
-    toast.error("Monitor URL is not reachable or invalid.");
-    throw Error();
-  }
+  const res = await axios.put(
+    `${import.meta.env.VITE_SERVER_URL}/api/monitor/${id}`,
+    { data },
+    { withCredentials: true }
+  );
+  return res.data.Monitor;
 };
 
 export const deleteMonitor = async (id?: string) => {

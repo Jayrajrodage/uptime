@@ -1,6 +1,5 @@
 import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { currentStatus, statusWidget } from "./types";
 import { UseMutationResult } from "@tanstack/react-query";
 import { toast } from "sonner";
 import MainApp from "@/MainApp";
@@ -17,19 +16,19 @@ const dayWise = Array.from({ length: 45 }, (_, index) => {
   const success = total - failed;
 
   return {
-    TotalRequest: total,
-    TotalFailed: failed,
-    TotalSuccuss: success,
-    Date: `2025-03-${String(index + 1).padStart(2, "0")}`,
+    totalRequest: total,
+    totalFailed: failed,
+    totalSuccess: success,
+    date: `2025-03-${String(index + 1).padStart(2, "0")}`,
   };
 });
 
-export const dummyStatusWidget: statusWidget = {
+export const dummyStatusWidget = {
   Name: "Example Widget",
   DayWiseRequests: dayWise,
-  TotalRequest: dayWise.reduce((acc, cur) => acc + cur.TotalRequest, 0),
-  TotalFailed: dayWise.reduce((acc, cur) => acc + cur.TotalFailed, 0),
-  TotalSuccess: dayWise.reduce((acc, cur) => acc + cur.TotalSuccuss, 0),
+  TotalRequest: dayWise.reduce((acc, cur) => acc + cur.totalRequest, 0),
+  TotalFailed: dayWise.reduce((acc, cur) => acc + cur.totalFailed, 0),
+  totalSuccess: dayWise.reduce((acc, cur) => acc + cur.totalSuccess, 0),
 };
 
 const ChartData = [
@@ -164,6 +163,7 @@ export const onDeleteMonitor = (
   toast.promise(deleteMutation.mutateAsync(`${id}`), {
     loading: "Deleting monitor...",
     success: async () => {
+      window.location.href = "/dashboard/moniters";
       return "Monitor deleted successfully!";
     },
     error: (error: any) => {
@@ -191,10 +191,4 @@ const getSubDomain = (host: string): string | null => {
 
   // Return the first part as subdomain (e.g., trigger.domain.com)
   return parts[0];
-};
-
-const getCurrentStatus = (success: number, failed: number): currentStatus => {
-  if (failed === 0) return currentStatus.ALL_OPERATIONAL; // All good
-  if (success === 0) return currentStatus.MAJOR_OUTAGE; // Everything failed
-  return currentStatus.PARTIAL_OUTAGE; // Some failed, some succeeded
 };

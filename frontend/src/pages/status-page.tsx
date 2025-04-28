@@ -18,6 +18,7 @@ const StatusPage = () => {
   if (isError) {
     return <NotFound />;
   }
+
   return (
     <>
       {isLoading ? (
@@ -39,14 +40,26 @@ const StatusPage = () => {
                   {data.page.monitors && data.dayWiseStats ? (
                     <>
                       <div
-                        className={`p-2 w-full border-2 rounded-lg bg-[#fb5621a]`}
+                        className={`p-2 w-full border-2 rounded-lg bg-[#fb5621a] ${
+                          parseInt(data.dayWiseStats[0].totalFailed) === 0
+                            ? "bg-green-500"
+                            : parseInt(data.dayWiseStats[0].totalSuccess) === 0
+                            ? "bg-red-500"
+                            : "bg-orange-500"
+                        }`}
                       >
                         <div className="flex justify-between">
-                          <div className="flex gap-2 items-center">
+                          <div className={`flex gap-2 items-center `}>
                             <CircleCheck />
-                            <h1>All Systems Operational</h1>
+                            <h1>
+                              {data.dayWiseStats[0].totalFailed === "0"
+                                ? "All Systems Operational"
+                                : data.dayWiseStats[0].totalSuccess === "0"
+                                ? "Major System Outage"
+                                : "Partial System Outage"}
+                            </h1>
                           </div>
-                          <div>{Date()}</div>
+                          <div>{new Date().toLocaleDateString()}</div>
                         </div>
                       </div>
                       <StatusWidget
