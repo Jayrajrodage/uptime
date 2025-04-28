@@ -139,11 +139,25 @@ export const getApp = () => {
 const getSubDomain = (host: string): string | null => {
   const parts = host.split(".");
 
-  // Handle localhost (e.g., trigger.localhost)
+  // List of reserved/ignored terms
+  const ignoredSubdomains = ["uptime-jay", "vercel", "app"];
+
+  // Handle localhost case
   if (host.includes("localhost")) {
     return parts.length > 1 ? parts[0] : null;
   }
 
-  // Return the first part as subdomain (e.g., trigger.domain.com)
-  return parts[0];
+  // If less than 3 parts (like domain.com) -> no subdomain
+  if (parts.length < 3) {
+    return null;
+  }
+
+  const subdomain = parts[0];
+
+  // If subdomain is reserved, return null
+  if (ignoredSubdomains.includes(subdomain)) {
+    return null;
+  }
+
+  return subdomain;
 };
