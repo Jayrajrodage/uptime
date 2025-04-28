@@ -124,7 +124,7 @@ const CreateMonitor = () => {
         >
           <Tabs
             value={tabValue}
-            onChange={(event: any, value: number) => setTabValue(value)}
+            onChange={(_event: any, value: number) => setTabValue(value)}
             textColor="inherit"
             variant="scrollable"
           >

@@ -1,4 +1,3 @@
-import React from "react";
 import { TestimonialCards } from "../ui/testimonial-cards";
 
 const testimonial = () => {

@@ -1,4 +1,3 @@
-import React from "react";
 import { Globe } from "../magicui/globe";
 import { NumberTicker } from "../magicui/number-ticker";
 const Featured = () => {

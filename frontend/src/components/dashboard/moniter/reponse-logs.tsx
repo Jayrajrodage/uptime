@@ -4,7 +4,6 @@ import {
   flexRender,
   type MRT_ColumnDef,
   useMaterialReactTable,
-  MRT_TableDetailPanel,
 } from "material-react-table";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -206,7 +205,7 @@ const ResponseLogs = () => {
                           <TableCell colSpan={columns.length + 1}>
                             <Tabs
                               value={tabValue}
-                              onChange={(event: any, value: number) =>
+                              onChange={(_event: any, value: number) =>
                                 setTabValue(value)
                               }
                               textColor="inherit"

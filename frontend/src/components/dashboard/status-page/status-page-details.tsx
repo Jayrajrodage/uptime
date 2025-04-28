@@ -168,9 +168,10 @@ const StatusPageDetails = () => {
                 <div>
                   <Tabs
                     value={tabValue}
-                    onChange={(event: React.SyntheticEvent, newValue: number) =>
-                      setTabValue(newValue)
-                    }
+                    onChange={(
+                      _event: React.SyntheticEvent,
+                      newValue: number
+                    ) => setTabValue(newValue)}
                     textColor="inherit"
                     variant="scrollable"
                   >

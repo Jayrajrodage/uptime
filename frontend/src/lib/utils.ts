@@ -4,77 +4,32 @@ import { UseMutationResult } from "@tanstack/react-query";
 import { toast } from "sonner";
 import MainApp from "@/MainApp";
 import StatusPageApp from "@/StatusPage";
+import { statusWidget } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 // Example dummy data
-const dayWise = Array.from({ length: 45 }, (_, index) => {
-  const total = Math.floor(Math.random() * 100);
-  const failed = Math.floor(Math.random() * 1.1);
-  const success = total - failed;
+export const dummyStatusWidget: statusWidget = {
+  TotalRequest: "900",
+  TotalFailed: "10",
+  TotalSuccess: "890",
+  Name: "Ping",
+  DayWiseRequests: Array.from({ length: 45 }).map((_, index) => {
+    const success = Math.floor(Math.random() * 30 + 20); // random 20-50
+    const failed = Math.floor(Math.random() * 1.1); // random 0-5
 
-  return {
-    totalRequest: total,
-    totalFailed: failed,
-    totalSuccess: success,
-    date: `2025-03-${String(index + 1).padStart(2, "0")}`,
-  };
-});
+    const today = new Date();
+    today.setDate(today.getDate() - (44 - index)); // 45 days ago to today
 
-export const dummyStatusWidget = {
-  Name: "Example Widget",
-  DayWiseRequests: dayWise,
-  TotalRequest: dayWise.reduce((acc, cur) => acc + cur.totalRequest, 0),
-  TotalFailed: dayWise.reduce((acc, cur) => acc + cur.totalFailed, 0),
-  totalSuccess: dayWise.reduce((acc, cur) => acc + cur.totalSuccess, 0),
+    return {
+      totalSuccess: success.toString(),
+      totalFailed: failed.toString(),
+      date: today.toISOString().split("T")[0], // YYYY-MM-DD format
+    };
+  }),
 };
-
-const ChartData = [
-  {
-    name: "13/10/25",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
 
 export const regions = [
   {

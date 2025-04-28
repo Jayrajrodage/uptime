@@ -1,4 +1,3 @@
-import React from "react";
 import StatusWidget from "../ui/status-widget";
 import { dummyStatusWidget } from "@/lib/utils";
 
@@ -32,6 +31,7 @@ const Status = () => {
               TotalFailed={dummyStatusWidget.TotalFailed}
               TotalRequest={dummyStatusWidget.TotalRequest}
               DayWiseRequests={dummyStatusWidget.DayWiseRequests}
+              TotalSuccess={dummyStatusWidget.TotalSuccess}
               Name="Ping"
             />
           </div>

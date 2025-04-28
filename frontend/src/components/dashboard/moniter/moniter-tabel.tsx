@@ -6,7 +6,7 @@ import {
   type MRT_ColumnDef,
   useMaterialReactTable,
 } from "material-react-table";
-import { Box, ThemeProvider, createTheme } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material";
 import {
   Table,
   TableBody,
@@ -22,7 +22,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -32,7 +31,6 @@ import {
   ArrowUpDown,
   Check,
   EllipsisIcon,
-  EllipsisVertical,
   InfoIcon,
   Radio,
   Settings,
@@ -42,7 +40,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import CreateMonitor from "./create-monitor";
 import { monitor, MonitorQueryResult } from "@/lib/types";
-import { toast } from "sonner";
 import { useDeleteMonitor } from "@/hooks/useDeleteMonitor";
 import { onDeleteMonitor } from "@/lib/utils";
 

@@ -1,6 +1,5 @@
 import {
   MRT_TableBodyCellValue,
-  MRT_TablePagination,
   flexRender,
   type MRT_ColumnDef,
   useMaterialReactTable,

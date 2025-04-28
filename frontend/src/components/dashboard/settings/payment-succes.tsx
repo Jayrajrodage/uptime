@@ -2,7 +2,6 @@ import { Card } from "@/components/ui/card";
 import { HeroHighlight } from "@/components/ui/hero-highlight";
 import axios from "axios";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function PaymentSuccess() {
