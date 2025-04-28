@@ -11,6 +11,7 @@ type props = {
 };
 
 const StatusBar = ({ DayWiseRequests }: props) => {
+  console.log("🚀 ~ StatusBar ~ DayWiseRequests:", DayWiseRequests);
   return (
     <div className="flex flex-row-reverse gap-[3px] sm:gap-0.5">
       {DayWiseRequests.map((day, id) => (
@@ -19,11 +20,11 @@ const StatusBar = ({ DayWiseRequests }: props) => {
             <TooltipTrigger asChild>
               <div
                 className={`h-10 cursor-pointer rounded-full border-2  flex-1 ${
-                  day.TotalRequest === 0
+                  parseInt(day.totalFailed) + parseInt(day.totalSuccess) === 0
                     ? "bg-gray-300"
-                    : day.TotalSuccuss === 0
+                    : parseInt(day.totalSuccess) === 0
                     ? "bg-red-500"
-                    : day.TotalFailed > 0
+                    : parseInt(day.totalFailed) > 0
                     ? "bg-orange-400"
                     : "bg-green-500"
                 }`}
@@ -33,30 +34,30 @@ const StatusBar = ({ DayWiseRequests }: props) => {
               <div className="flex">
                 <div
                   className={`h-12 ${
-                    day.TotalRequest === 0
+                    parseInt(day.totalFailed) + parseInt(day.totalSuccess) === 0
                       ? "bg-gray-300"
-                      : day.TotalSuccuss === 0
+                      : parseInt(day.totalSuccess) === 0
                       ? "bg-red-500"
-                      : day.TotalFailed > 0
+                      : parseInt(day.totalFailed) > 0
                       ? "bg-orange-400"
                       : "bg-green-500"
                   } w-2 rounded-2xl`}
                 ></div>
-                <div className="flex gap-2 justify-between border rounded-lg">
+                <div className="flex gap-2 justify-between rounded-lg">
                   <div className="flex flex-col justify-between px-1">
                     <h1 className="font-bold">Operational</h1>
                     <p>
                       <span className="text-green-500 font-semibold text-lg">
-                        {day.TotalSuccuss}
+                        {day.totalSuccess}
                       </span>{" "}
                       Request
                     </p>
                   </div>
                   <div className="flex flex-col justify-between px-1">
-                    <span>{day.Date}</span>
+                    <span>{day.date}</span>
                     <p className="text-end">
                       <span className="text-red-500 font-semibold text-lg">
-                        {day.TotalFailed}
+                        {day.totalFailed}
                       </span>{" "}
                       Failed
                     </p>

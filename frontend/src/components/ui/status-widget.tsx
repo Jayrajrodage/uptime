@@ -2,7 +2,6 @@ import { statusWidget } from "@/lib/types";
 import StatusBar from "@/components/ui/status-bar";
 const StatusWidget = ({
   TotalFailed,
-  TotalRequest,
   Name,
   DayWiseRequests,
   TotalSuccess,
@@ -31,7 +30,12 @@ const StatusWidget = ({
           </svg>
         </div>
         <p className="shrink-0 font-semibold">
-          {((TotalSuccess / TotalRequest) * 100).toFixed(2)}%
+          {(
+            (parseInt(TotalSuccess) /
+              (parseInt(TotalSuccess) + parseInt(TotalFailed))) *
+            100
+          ).toFixed(2)}
+          %
         </p>
       </div>
       <div>

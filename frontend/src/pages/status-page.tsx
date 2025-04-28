@@ -4,14 +4,13 @@ import Loader from "@/components/ui/loader";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import NotFound from "@/components/ui/not-found";
 import StatusWidget from "@/components/ui/status-widget";
-import { StatusPage as TypeStatusPage } from "@/lib/types";
-import { dummyStatusWidget } from "@/lib/utils";
+import { StatusPageWStats } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 import { Activity, CircleCheck } from "lucide-react";
 
 const StatusPage = () => {
   const host = window.location.hostname.split(".")[0];
-  const { data, isLoading, isError, isSuccess } = useQuery<TypeStatusPage>({
+  const { data, isLoading, isError, isSuccess } = useQuery<StatusPageWStats>({
     queryKey: ["pageStats", host],
     queryFn: () => getPageStats(host!),
     enabled: !!host,
@@ -36,8 +35,8 @@ const StatusPage = () => {
               {/* Bars */}
               <div className="rounded-xl font-semibold text-xl border-2 p-5 bg-background/70 w-full">
                 <div className="flex flex-col text-start gap-10">
-                  <h1 className="font-bold text-2xl">{data.title}</h1>
-                  {data.monitors ? (
+                  <h1 className="font-bold text-2xl">{data.page.title}</h1>
+                  {data.page.monitors && data.dayWiseStats ? (
                     <>
                       <div
                         className={`p-2 w-full border-2 rounded-lg bg-[#fb5621a]`}
@@ -51,18 +50,18 @@ const StatusPage = () => {
                         </div>
                       </div>
                       <StatusWidget
-                        TotalFailed={dummyStatusWidget.TotalFailed}
-                        TotalRequest={dummyStatusWidget.TotalRequest}
-                        DayWiseRequests={dummyStatusWidget.DayWiseRequests}
-                        TotalSuccess={dummyStatusWidget.TotalSuccess}
-                        Name="Ping"
+                        TotalFailed={data.totalFailed}
+                        TotalRequest={data.totalFailed + data.totalSuccess}
+                        DayWiseRequests={data.dayWiseStats}
+                        TotalSuccess={data.totalSuccess}
+                        Name={data.page.title}
                       />
                     </>
                   ) : (
                     <div className="flex flex-col justify-center items-center gap-1 p-2 rounded-2xl bg-background/70 border-2 py-5">
                       <Activity />
-                      <h1>No monitors</h1>
-                      <p className="text-muted-foreground">
+                      <h1 className="text-xl font-semibold">No monitors</h1>
+                      <p className="text-lg text-muted-foreground">
                         The status page has no connected monitors.
                       </p>
                     </div>
@@ -71,7 +70,7 @@ const StatusPage = () => {
               </div>
               {/* Footer */}
               <div className="flex justify-between">
-                <h1>Asia/kolakatta</h1>
+                <h1>{Intl.DateTimeFormat().resolvedOptions().timeZone}</h1>
                 <h1>
                   Build with 💌 by{" "}
                   <a

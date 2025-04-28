@@ -68,6 +68,7 @@ const MoniterSettings = () => {
   const [tabValue, setTabValue] = React.useState(0);
   const onSubmit = (data: CreateMonitorInput) => {
     if (!id) return;
+    console.log("🚀 ~ toast.promise ~ toast:", toast);
     toast.promise(mutation.mutateAsync(data), {
       loading: "Updating monitor...",
       success: async () => {

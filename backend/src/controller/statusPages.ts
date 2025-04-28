@@ -1,3 +1,4 @@
+import axios from "axios";
 import prisma from "../utils/db";
 import { Request, Response } from "express";
 import { PagesSchema } from "../zod/schema";
@@ -211,9 +212,39 @@ export const getPageStats = async (req: Request, res: Response) => {
       });
       return;
     }
+    if (!page.monitorId) {
+      res.status(200).send({
+        message: "status page found successfully",
+        data: { page: page },
+      });
+      return;
+    }
+    const response = await axios.get(
+      `https://api.us-east.aws.tinybird.co/v0/pipes/last_45d.json?monitor_id=${page.monitorId}`,
+      { headers: { Authorization: `Bearer ${process.env.TINYBIRD_KEY}` } }
+    );
+    if (!response.data?.data) {
+      res.status(200).send({
+        message: "status page found successfully",
+        data: { page: page },
+      });
+      return;
+    }
+    const data = response.data?.data[0];
+    if (data?.dayWiseStats && Array.isArray(data.dayWiseStats)) {
+      const missing = 45 - data.dayWiseStats.length;
+      if (missing > 0) {
+        const emptyItems = Array(missing).fill({
+          date: "",
+          totalFailed: "0",
+          totalSuccess: "0",
+        });
+        data.dayWiseStats = data.dayWiseStats.concat(emptyItems);
+      }
+    }
     res.status(200).send({
-      message: "status page found successfully",
-      page,
+      message: "status page found with stats successfully",
+      data: { page, ...data },
     });
   } catch (error) {
     console.log("🚀 ~ getPageStats ~ error:", error);

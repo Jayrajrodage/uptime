@@ -1,14 +1,13 @@
 export type statusWidgetArray = {
-  TotalRequest: number;
-  TotalSuccuss: number;
-  TotalFailed: number;
-  Date: string;
+  totalSuccess: string;
+  totalFailed: string;
+  date: string;
 };
 
 export type statusWidget = {
-  TotalRequest: number;
-  TotalFailed: number;
-  TotalSuccess: number;
+  TotalRequest: string;
+  TotalFailed: string;
+  TotalSuccess: string;
   Name: string;
   DayWiseRequests: statusWidgetArray[];
 };
@@ -156,3 +155,10 @@ export enum currentStatus {
   PARTIAL_OUTAGE = "Partial System Outage",
   MAJOR_OUTAGE = "Major System Outage",
 }
+
+export type StatusPageWStats = {
+  page: StatusPage;
+  dayWiseStats?: statusWidgetArray[];
+  totalFailed: string;
+  totalSuccess: string;
+};
