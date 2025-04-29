@@ -59,9 +59,9 @@ app.use("/api/status-pages", auth, statusPages);
 app.use("/api/monitor", auth, monitor);
 
 app.get("/", (req, res) => {
-  // Send a response to the client
   res.status(200).send("Hello from uptime server!");
 });
+
 //TODO: test this endpoint on production
 app.post("/api/alert", createEmailAlert);
 
