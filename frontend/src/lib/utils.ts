@@ -132,32 +132,25 @@ export const getApp = () => {
   const host = window.location.hostname;
   const subDomain = getSubDomain(host);
   if (!subDomain) return MainApp;
-  if (subDomain === "www") return MainApp;
   return StatusPageApp;
 };
 
 const getSubDomain = (host: string): string | null => {
-  const parts = host.split(".");
-
-  // List of reserved/ignored terms
-  const ignoredSubdomains = ["uptime-jay", "vercel", "app"];
-
-  // Handle localhost case
+  // Handle localhost (e.g., sub.localhost)
   if (host.includes("localhost")) {
+    const parts = host.split(".");
     return parts.length > 1 ? parts[0] : null;
   }
 
-  // If less than 3 parts (like domain.com) -> no subdomain
-  if (parts.length < 3) {
-    return null;
+  // Remove 'www' if present
+  const cleanedHost = host.startsWith("www.") ? host.slice(4) : host;
+
+  // Match only subdomain.uptimely.top
+  const parts = cleanedHost.split(".");
+
+  if (parts.length === 3 && parts[1] === "uptimely" && parts[2] === "top") {
+    return parts[0]; // Return the subdomain
   }
 
-  const subdomain = parts[0];
-
-  // If subdomain is reserved, return null
-  if (ignoredSubdomains.includes(subdomain)) {
-    return null;
-  }
-
-  return subdomain;
+  return null; // Disallow anything else
 };
