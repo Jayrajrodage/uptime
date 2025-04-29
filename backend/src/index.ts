@@ -17,6 +17,7 @@ dotenv.config();
 const app = express();
 
 const allowedOrigins = [
+  "https://uptimely.top", //main domain
   "http://localhost:5173", // Local dev
   /\.localhost:5173$/, // Local subdomains
   /\.uptimely\.top$/, // All subdomains of uptimely.top (prod)
