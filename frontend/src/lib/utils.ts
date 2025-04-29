@@ -81,24 +81,6 @@ export const regions = [
   },
 ];
 
-export const notificationChannelsDemo = [
-  { name: "lingo", channel: "Email", id: 0 },
-  { name: "TriggerX", channel: "Email", id: 1 },
-  { name: "boss", channel: "SMS", id: 2 },
-];
-
-export const monitorsPageDemo = [
-  { id: 0, name: "lingo", url: "https://lingo.com" },
-  { id: 1, name: "TriggerX", url: "https://Triggerx.com" },
-  { id: 2, name: "boss", url: "https://boss.com" },
-];
-
-export const statusPagesDemo = [
-  { title: "lingo", id: 0 },
-  { title: "TriggerX", id: 1 },
-  { title: "boss", id: 2 },
-];
-
 export function getQuantile(data: number[], quantile: number): number {
   if (!data.length) return 0;
 
