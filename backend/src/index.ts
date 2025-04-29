@@ -16,18 +16,24 @@ dotenv.config();
 
 const app = express();
 
-//TODO:Change the cors policy for prod
-// middleware
+const allowedOrigins = [
+  "http://localhost:5173", // Local dev
+  /\.localhost:5173$/, // Local subdomains
+  /\.uptimely\.top$/, // All subdomains of uptimely.top (prod)
+];
+
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, curl, Postman)
-      if (!origin) return callback(null, true);
+      if (!origin) return callback(null, true); // allow non-browser tools
 
-      // Allow any subdomain of localhost:5173
-      const allowed = /^http:\/\/.*\.localhost:5173$/;
+      const isAllowed = allowedOrigins.some((pattern) => {
+        return typeof pattern === "string"
+          ? origin === pattern
+          : pattern.test(origin);
+      });
 
-      if (allowed.test(origin) || origin === "http://localhost:5173") {
+      if (isAllowed) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
@@ -36,6 +42,7 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 const port = process.env.PORT || 5000;

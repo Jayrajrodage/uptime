@@ -2,7 +2,11 @@ import { Request, Response, NextFunction } from "express";
 import { jwtDecode } from "jwt-decode";
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {
-  if (req.originalUrl.startsWith("/api/status-pages/data/")) {
+  //ignore auth for this route
+  if (
+    req.originalUrl.startsWith("/api/status-pages/data/") ||
+    req.originalUrl.startsWith("/api/profile/create")
+  ) {
     return next();
   }
   const token = req.cookies.__session;
