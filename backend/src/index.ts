@@ -48,7 +48,6 @@ app.use(
 app.use(
   clerkMiddleware({
     authorizedParties: [`${process.env.FRONTEND_URL}`],
-    debug: true,
   })
 );
 app.use(express.json({ limit: "10mb" }));

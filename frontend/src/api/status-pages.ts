@@ -1,10 +1,11 @@
 import { InputCreateStatusPage } from "@/lib/types";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 export const getPages = async () => {
   const res = await axios.get(
     `${import.meta.env.VITE_SERVER_URL}/api/status-pages`,
-    { withCredentials: true }
+    { headers: { Authorization: `Bearer ${Cookies.get("__session")}` } }
   );
   return res.data.Pages;
 };
@@ -15,7 +16,7 @@ export const crateStatusPage = async (inputData: InputCreateStatusPage) => {
     {
       inputData,
     },
-    { withCredentials: true }
+    { headers: { Authorization: `Bearer ${Cookies.get("__session")}` } }
   );
   return data;
 };
@@ -23,7 +24,7 @@ export const crateStatusPage = async (inputData: InputCreateStatusPage) => {
 export const getStatusPageDetails = async (id: string) => {
   const res = await axios.get(
     `${import.meta.env.VITE_SERVER_URL}/api/status-pages/${id}`,
-    { withCredentials: true }
+    { headers: { Authorization: `Bearer ${Cookies.get("__session")}` } }
   );
   return res.data.Page;
 };
@@ -32,7 +33,7 @@ export const updatePage = async (id: string, data: InputCreateStatusPage) => {
   const res = await axios.put(
     `${import.meta.env.VITE_SERVER_URL}/api/status-pages/${id}`,
     { ...data, monitorId: data.monitorId ?? null },
-    { withCredentials: true }
+    { headers: { Authorization: `Bearer ${Cookies.get("__session")}` } }
   );
   return res.data.Page;
 };
@@ -40,7 +41,7 @@ export const updatePage = async (id: string, data: InputCreateStatusPage) => {
 export const deletePage = async (id: string) => {
   const res = await axios.delete(
     `${import.meta.env.VITE_SERVER_URL}/api/status-pages/${id}`,
-    { withCredentials: true }
+    { headers: { Authorization: `Bearer ${Cookies.get("__session")}` } }
   );
   return res.data;
 };

@@ -1,5 +1,6 @@
 import { CreateChannelInput, UpdateChannelInput } from "@/lib/types";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 export const crateChannel = async ({
   name,
@@ -13,7 +14,7 @@ export const crateChannel = async ({
       channel,
       channeldata,
     },
-    { withCredentials: true }
+    { headers: { Authorization: `Bearer ${Cookies.get("__session")}` } }
   );
   return data;
 };
@@ -21,7 +22,7 @@ export const crateChannel = async ({
 export const getChannels = async () => {
   const res = await axios.get(
     `${import.meta.env.VITE_SERVER_URL}/api/channel`,
-    { withCredentials: true }
+    { headers: { Authorization: `Bearer ${Cookies.get("__session")}` } }
   );
   return res.data.Channels;
 };
@@ -29,7 +30,7 @@ export const getChannels = async () => {
 export const getChannelDetails = async (id: string) => {
   const res = await axios.get(
     `${import.meta.env.VITE_SERVER_URL}/api/channel/${id}`,
-    { withCredentials: true }
+    { headers: { Authorization: `Bearer ${Cookies.get("__session")}` } }
   );
   return res.data.Channel;
 };
@@ -38,7 +39,7 @@ export const updateChannel = async (id: string, data: UpdateChannelInput) => {
   const res = await axios.put(
     `${import.meta.env.VITE_SERVER_URL}/api/channel/${id}`,
     { data },
-    { withCredentials: true }
+    { headers: { Authorization: `Bearer ${Cookies.get("__session")}` } }
   );
   return res.data.Channel;
 };
@@ -46,7 +47,7 @@ export const updateChannel = async (id: string, data: UpdateChannelInput) => {
 export const deleteChannel = async (id: number) => {
   const res = await axios.delete(
     `${import.meta.env.VITE_SERVER_URL}/api/channel/${id}`,
-    { withCredentials: true }
+    { headers: { Authorization: `Bearer ${Cookies.get("__session")}` } }
   );
   return res.data;
 };

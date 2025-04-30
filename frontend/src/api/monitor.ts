@@ -2,12 +2,12 @@ import { CreateMonitorInput } from "@/lib/types";
 import { getQuantile } from "@/lib/utils";
 import axios from "axios";
 import { toast } from "sonner";
-
+import Cookies from "js-cookie";
 export const crateMonitor = async (inputData: CreateMonitorInput) => {
   const { data } = await axios.post(
     `${import.meta.env.VITE_SERVER_URL}/api/monitor`,
     { inputData },
-    { withCredentials: true }
+    { headers: { Authorization: `Bearer ${Cookies.get("__session")}` } }
   );
   return data;
 };
@@ -15,7 +15,7 @@ export const crateMonitor = async (inputData: CreateMonitorInput) => {
 export const getMonitorNames = async () => {
   const res = await axios.get(
     `${import.meta.env.VITE_SERVER_URL}/api/monitor/names`,
-    { withCredentials: true }
+    { headers: { Authorization: `Bearer ${Cookies.get("__session")}` } }
   );
   return res.data.Monitors;
 };
@@ -23,7 +23,7 @@ export const getMonitorNames = async () => {
 export const getMonitorDetails = async (id: string) => {
   const res = await axios.get(
     `${import.meta.env.VITE_SERVER_URL}/api/monitor/${id}`,
-    { withCredentials: true }
+    { headers: { Authorization: `Bearer ${Cookies.get("__session")}` } }
   );
   return res.data.Monitor;
 };
@@ -43,7 +43,7 @@ export const updateMonitor = async (id: string, data: CreateMonitorInput) => {
   const res = await axios.put(
     `${import.meta.env.VITE_SERVER_URL}/api/monitor/${id}`,
     { data },
-    { withCredentials: true }
+    { headers: { Authorization: `Bearer ${Cookies.get("__session")}` } }
   );
   return res.data.Monitor;
 };
@@ -52,7 +52,7 @@ export const deleteMonitor = async (id?: string) => {
   if (!id) return;
   const res = await axios.delete(
     `${import.meta.env.VITE_SERVER_URL}/api/monitor/${id}`,
-    { withCredentials: true }
+    { headers: { Authorization: `Bearer ${Cookies.get("__session")}` } }
   );
   return res.data;
 };
@@ -68,7 +68,7 @@ export const getMonitors = async ({
     `${import.meta.env.VITE_SERVER_URL}/api/monitor`,
     {
       params: { page, limit },
-      withCredentials: true,
+      headers: { Authorization: `Bearer ${Cookies.get("__session")}` },
     }
   );
   return response.data;
@@ -77,7 +77,7 @@ export const getMonitors = async ({
 export const getMonitorInfo = async (id: string) => {
   const res = await axios.get(
     `${import.meta.env.VITE_SERVER_URL}/api/monitor/info/${id}`,
-    { withCredentials: true }
+    { headers: { Authorization: `Bearer ${Cookies.get("__session")}` } }
   );
   return res.data.Monitor;
 };
