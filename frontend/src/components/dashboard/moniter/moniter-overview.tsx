@@ -212,9 +212,9 @@ const MoniterOverview = () => {
       ) : (
         <>
           {isSuccess2 && (
-            <div>
+            <>
               <MoniterStatsTable data={data2} />
-            </div>
+            </>
           )}
         </>
       )}

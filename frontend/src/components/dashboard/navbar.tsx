@@ -64,7 +64,7 @@ const DashboardNavbar = () => {
                   .startsWith("/dashboard/status-pages")
                   ? "border-black dark:border-white"
                   : "border-transparent"
-              } dark:hover:text-white hover:text-gray-700 font-medium sm:text-base md:text-sm text-xs `}
+              } dark:hover:text-white hover:text-gray-700 font-medium sm:text-base md:text-sm text-xs whitespace-nowrap`}
             >
               Status Pages
             </Link>
