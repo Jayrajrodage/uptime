@@ -45,7 +45,12 @@ app.use(
   })
 );
 
-app.use(clerkMiddleware());
+app.use(
+  clerkMiddleware({
+    authorizedParties: [`${process.env.FRONTEND_URL}`],
+    debug: true,
+  })
+);
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 const port = process.env.PORT || 5000;
