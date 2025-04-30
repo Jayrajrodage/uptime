@@ -48,9 +48,9 @@ export const createPage = async (req: Request, res: Response) => {
     }
 
     const { title, slug, monitorId } = parsedData.data;
-    //TODO:change the slug.uptime.com domain after deployment
+
     const existingPage = await prisma.statusPages.findUnique({
-      where: { slug: `${slug}.uptime.com` },
+      where: { slug: `${slug}.uptimely.top` },
     });
 
     if (existingPage) {
@@ -62,7 +62,7 @@ export const createPage = async (req: Request, res: Response) => {
     await prisma.statusPages.create({
       data: {
         title,
-        slug: `${slug}.uptime.com`,
+        slug: `${slug}.uptimely.top`,
         clerkId,
         ...(monitorId && {
           monitorId: monitorId,
@@ -93,9 +93,8 @@ export const updatePage = async (req: Request, res: Response) => {
       return;
     }
     const { title, slug, monitorId } = parsedData.data;
-    //TODO:change the slug.uptime.com domain after deployment
     const existingPage = await prisma.statusPages.findUnique({
-      where: { slug: `${slug}.uptime.com` },
+      where: { slug: `${slug}.uptimely.top` },
     });
 
     if (existingPage && existingPage.id !== parseInt(id)) {
@@ -108,7 +107,7 @@ export const updatePage = async (req: Request, res: Response) => {
       where: { id: parseInt(id) },
       data: {
         title,
-        slug: `${slug}.uptime.com`,
+        slug: `${slug}.uptimely.top`,
         monitorId: monitorId,
       },
     });
@@ -202,7 +201,7 @@ export const getPageStats = async (req: Request, res: Response) => {
     const { slug } = req.params;
     //TODO:change the slug.uptime.com domain after deployment
     const page = await prisma.statusPages.findUnique({
-      where: { slug: `${slug}.uptime.com` },
+      where: { slug: `${slug}.uptimely.top` },
       include: { monitors: true },
     });
 

@@ -1,6 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import { jwtDecode } from "jwt-decode";
-
 export const auth = (req: Request, res: Response, next: NextFunction) => {
   //ignore auth for this route
   if (
@@ -9,16 +7,7 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
   ) {
     return next();
   }
-  const token = req.cookies.__session;
-  if (!token) {
-    res.status(401).json({
-      success: false,
-      message: "Unauthorized: token not found",
-    });
-    return;
-  }
-  const decodedToken = jwtDecode<{ exp: number; sub: string }>(token);
-  const userId = decodedToken.sub;
+  const { userId } = req.auth;
   if (!userId) {
     res.status(401).json({
       success: false,
@@ -26,6 +15,6 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
     });
     return;
   }
-  req.userId = decodedToken.sub;
+  req.userId = userId;
   next();
 };

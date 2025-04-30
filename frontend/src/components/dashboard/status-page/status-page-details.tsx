@@ -134,6 +134,10 @@ const StatusPageDetails = () => {
                             value: 30,
                             message: "Title must be less than 30 characters",
                           },
+                          pattern: {
+                            value: /^[^.]+$/, // disallows dot
+                            message: "dot (.) is not allowed",
+                          },
                         })}
                       />
                       <p className="text-muted-foreground">
@@ -156,7 +160,7 @@ const StatusPageDetails = () => {
                           readOnly
                         />
                         <div className="dark:bg-gray-500 bg-gray-400 w-[10rem] flex justify-center items-center rounded-tr-lg rounded-ee-lg">
-                          .uptime.dev
+                          .uptimely.top
                         </div>
                       </div>
                       <p className="text-muted-foreground">

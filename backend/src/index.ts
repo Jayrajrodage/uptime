@@ -12,6 +12,7 @@ import { initializeRedisClient } from "./utils/redisClient";
 import "./cron/cron";
 import "./worker/worker";
 import { startWorker } from "./worker/worker";
+import { clerkMiddleware } from "@clerk/express";
 dotenv.config();
 
 const app = express();
@@ -44,6 +45,7 @@ app.use(
   })
 );
 
+app.use(clerkMiddleware());
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 const port = process.env.PORT || 5000;

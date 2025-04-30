@@ -5,6 +5,7 @@ declare global {
     interface Request {
       cookie: string;
       userId: string;
+      auth: AuthObject;
     }
   }
 }

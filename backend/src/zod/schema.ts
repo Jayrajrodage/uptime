@@ -67,7 +67,8 @@ export const PagesSchema = z.object({
   title: z
     .string()
     .min(1, "title must be at least 1 characters")
-    .max(30, "title must be less than 30 characters"),
+    .max(30, "title must be less than 30 characters")
+    .regex(/^[^.]+$/, "title cannot contain a dot (.)"),
   slug: z
     .string()
     .min(1, "slug must be at least 1 characters")
