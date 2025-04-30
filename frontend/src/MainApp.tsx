@@ -22,7 +22,12 @@ if (!PUBLISHABLE_KEY) {
 const MainApp: FC = () => {
   return (
     <>
-      <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+      <ClerkProvider
+        publishableKey={PUBLISHABLE_KEY}
+        afterSignOutUrl="/"
+        isSatellite
+        domain={import.meta.env.VITE_SERVER_URL!}
+      >
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/sign-in" element={<SignInPage />} />
