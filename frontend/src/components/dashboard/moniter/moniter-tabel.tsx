@@ -90,16 +90,19 @@ const columns: MRT_ColumnDef<monitor>[] = [
   {
     accessorKey: "subRegions",
     header: "Sub Regions",
+    Header: () => <div className="text-nowrap">Sub Regions</div>,
     Cell: ({ row }) => <>{row.original.subRegions.length ?? 0}</>,
   },
   {
     accessorKey: "notificationChannel",
     header: "Notification Channels",
+    Header: () => <div className="text-nowrap">Notification Channels</div>,
     Cell: ({ row }) => <>{row.original.notificationChannel.length ?? 0}</>,
   },
   {
     accessorKey: "StatusPages",
     header: "Status Page",
+    Header: () => <div className="text-nowrap">Status Page</div>,
     Cell: ({ row }) => <>{row.original.StatusPages?.title}</>,
   },
   {

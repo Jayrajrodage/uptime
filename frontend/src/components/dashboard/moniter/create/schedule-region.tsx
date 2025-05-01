@@ -102,7 +102,7 @@ const ScheduleRegion = ({
             {regions.map((region) => (
               <div key={region.name} className="flex flex-col gap-3">
                 <h5 className="text-sm">{region.name}</h5>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid sm:grid-cols-3 grid-cols-2 gap-2">
                   {region.subRegions.map((sub) => {
                     if (!getValues) {
                       console.log("getValue props are not passed");
@@ -129,7 +129,9 @@ const ScheduleRegion = ({
                             <h1>{sub.name}</h1>
                           </div>
                           {isComingSoon && (
-                            <span className="text-xs">Coming soon</span>
+                            <span className="text-xs hidden sm:block">
+                              Coming soon
+                            </span>
                           )}
                           {isSelected ? (
                             <CircleCheck className="text-green-500" />

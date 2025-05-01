@@ -40,7 +40,7 @@ const StatusPage = () => {
                   {data.page.monitors && data.dayWiseStats ? (
                     <>
                       <div
-                        className={`p-2 w-full border-2 rounded-lg bg-[#fb5621a] ${
+                        className={`p-2 w-full border-2 rounded-lg ${
                           parseInt(data.dayWiseStats[0].totalFailed) === 0
                             ? "bg-green-500"
                             : parseInt(data.dayWiseStats[0].totalSuccess) === 0
@@ -48,18 +48,20 @@ const StatusPage = () => {
                             : "bg-orange-500"
                         }`}
                       >
-                        <div className="flex justify-between">
+                        <div className="flex justify-between items-center">
                           <div className={`flex gap-2 items-center `}>
                             <CircleCheck />
-                            <h1>
+                            <h6 className="text-sm md:text-xl sm:text-lg">
                               {data.dayWiseStats[0].totalFailed === "0"
                                 ? "All Systems Operational"
                                 : data.dayWiseStats[0].totalSuccess === "0"
                                 ? "Major System Outage"
                                 : "Partial System Outage"}
-                            </h1>
+                            </h6>
                           </div>
-                          <div>{new Date().toLocaleDateString()}</div>
+                          <div className="text-sm md:text-xl sm:text-lg">
+                            {new Date().toLocaleDateString()}
+                          </div>
                         </div>
                       </div>
                       <StatusWidget
@@ -82,7 +84,7 @@ const StatusPage = () => {
                 </div>
               </div>
               {/* Footer */}
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center text-sm sm:text-base">
                 <h1>{Intl.DateTimeFormat().resolvedOptions().timeZone}</h1>
                 <h1>
                   Build with 💌 by{" "}

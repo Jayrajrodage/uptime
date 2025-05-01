@@ -271,16 +271,6 @@ const MoniterSettings = () => {
                   </CustomTabPanel>
                   <CustomTabPanel value={tabValue} index={5}>
                     <DeleteMonitor id={id} />
-                    <div className="flex items-end justify-end">
-                      <Button
-                        disabled={!isValid}
-                        type="submit"
-                        size={"lg"}
-                        className="w-[10rem]"
-                      >
-                        Confirm
-                      </Button>
-                    </div>
                   </CustomTabPanel>
                 </ThemeProvider>
               </div>
