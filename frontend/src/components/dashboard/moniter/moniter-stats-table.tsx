@@ -30,7 +30,7 @@ const CustomTooltip = ({ active, payload }: any) => {
     const { timestamp, durationMs } = payload[0].payload; // Extract data of hovered point
     return (
       <div className="rounded-xl border border-border bg-background/70 px-3 py-4 backdrop-blur-lg">
-        <p className="label">{new Date(timestamp).toLocaleString()}</p>
+        <p className="label">{new Date(timestamp).toLocaleString("en-IN")}</p>
         <div className="flex gap-2">
           <div className="bg-green-400 w-1" />
           <p className="intro">

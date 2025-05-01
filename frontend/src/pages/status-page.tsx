@@ -60,7 +60,11 @@ const StatusPage = () => {
                             </h6>
                           </div>
                           <div className="text-sm md:text-xl sm:text-lg">
-                            {new Date().toLocaleDateString()}
+                            {new Date().toLocaleDateString("en-IN", {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                            })}
                           </div>
                         </div>
                       </div>

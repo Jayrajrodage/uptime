@@ -14,6 +14,7 @@ import NotificationDetails from "./components/dashboard/notification/notificatio
 import PaymentSuccess from "./components/dashboard/settings/payment-succes";
 import StatusPageDetails from "./components/dashboard/status-page/status-page-details";
 import { ClerkProvider } from "@clerk/clerk-react";
+import NotFound from "./components/ui/not-found";
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 if (!PUBLISHABLE_KEY) {
@@ -24,6 +25,7 @@ const MainApp: FC = () => {
     <>
       <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
         <Routes>
+          <Route path="*" element={<NotFound />} />
           <Route path="/" element={<Home />} />
           <Route path="/sign-in" element={<SignInPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />

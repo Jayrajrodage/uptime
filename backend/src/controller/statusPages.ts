@@ -199,7 +199,6 @@ export const deletePage = async (req: Request, res: Response) => {
 export const getPageStats = async (req: Request, res: Response) => {
   try {
     const { slug } = req.params;
-    //TODO:change the slug.uptime.com domain after deployment
     const page = await prisma.statusPages.findUnique({
       where: { slug: `${slug}.uptimely.top` },
       include: { monitors: true },

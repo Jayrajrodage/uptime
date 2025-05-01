@@ -69,7 +69,6 @@ app.get("/", (req, res) => {
   res.status(200).send("Hello from uptime server!");
 });
 
-//TODO: test this endpoint on production
 app.post("/api/alert", createEmailAlert);
 
 const startApp = async () => {
