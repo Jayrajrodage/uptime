@@ -8,6 +8,11 @@ https://github.com/user-attachments/assets/3927927c-8b29-416e-844c-b3b40cf68d0c
 [![Live](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://uptimely.top "Live")
 
 
+## Desgin
+
+![uptime](https://github.com/user-attachments/assets/8f66631f-83c7-43b9-b8b5-b13aa3bc0d1b)
+
+
 ## Technologies Used
 
 - React.js
