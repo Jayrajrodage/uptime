@@ -80,7 +80,7 @@ const Request = ({ register, control, errors }: props) => {
               required: "URL is required",
               pattern: {
                 value:
-                  /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w\-._~:/?#[\]@!$&'()*+,;=.]+)?$/,
+                  /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?\/?$/,
                 message: "Enter a valid URL",
               },
             })}
